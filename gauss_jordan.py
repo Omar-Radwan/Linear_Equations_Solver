@@ -1,15 +1,15 @@
-import copy
-
+from gauss_elimination import GaussianElimination
 from matrix_solver import MatrixSolver
 
 
-class GaussianElimination(MatrixSolver):
+class GaussJordan(MatrixSolver):
     def __init__(self, matrix: [], result: []):
         super().__init__(matrix, result)
 
     def solve(self):
         self.build_augmented_matrix()
+        self.build_upper_zeros()
         self.build_lower_zeros()
+        self.obtain_main_diagonal_ones()
         self.separate_augmented_matrix()
-        self.back_substitution()
         return self.result
