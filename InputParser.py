@@ -46,7 +46,7 @@ class InputParser:
 
                     #check if single number
                     if self.isDigit(splittedTerm[0]):
-                        results[i]=int(splittedTerm[0])*-1
+                        results[i]=float(splittedTerm[0])*-1
 
 
                     #variable with coefficient =1
@@ -58,7 +58,7 @@ class InputParser:
 
                 else:
                     coefficient = splittedTerm[0]
-                    matrix[i][indexDictionary[splittedTerm[1]]]=int(coefficient)
+                    matrix[i][indexDictionary[splittedTerm[1]]]=float(coefficient)
 
         return matrix,results
 
@@ -121,7 +121,7 @@ class InputParser:
 
 
 inputParser=InputParser()
-listOfEquations=["+3*a-2*b+c+y-7","+2*b-c-4","+2*c-1","+y+3"]
+listOfEquations=["+2*a1-2*b+2*c+1000*y-7","+2*b-2*c-4","+2*c-1","+3.3y+3"]
 matrix,results=inputParser.getCoefficientMatrix(listOfEquations)
 print(matrix)
 print(results)
