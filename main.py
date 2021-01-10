@@ -9,7 +9,7 @@ root = tk.Tk()
 
 
 
-class main():
+class gui():
     maximumIterations = tk.IntVar()
     precision = tk.DoubleVar()
     numberOfEquations = tk.StringVar(root)
@@ -26,18 +26,22 @@ class main():
 
     def begin(self):
 
-
         self.takeInputs()
         self.chooseMethod()
-
         root.geometry("900x650")
         root.mainloop()
+        #return self.equationsList,self.method
 
+    def check(self):
 
+        root.destroy()
 
     def makeTable(self):
         self.frame = ScrollableFrame(root)
         n=int(self.numberOfEquations.get())
+        self.equationsList=[]
+        lis=[]
+
 
         for i in range(n):
             listBox = Listbox(self.frame.scrollable_frame, height=1,width=53)
@@ -45,6 +49,7 @@ class main():
             textBox = Text(self.frame.scrollable_frame, width=40, height=2)
             listBox.pack(pady=10)
             textBox.pack(pady=10)
+            lis.append(textBox)
 
 
         self.frame.pack()
@@ -54,10 +59,11 @@ class main():
 
 
         def retrieve_input():
-            inputValue = textBox.get("1.0", "end-1c")
 
-            equationsList=str(inputValue).split("\n")
-            print(equationsList)
+            for i in range(n):
+                self.equationsList.append(lis[i].get("1.0", "end-1c"))
+
+            root.destroy()
 
     def chooseMethod(self):
         self.makeLabelPackVertical(root, tk, "Choose method :", 20)
@@ -83,7 +89,6 @@ class main():
         name_entry = tk.Entry(root, textvariable=self.numberOfEquations, font=('calibre', 10, 'normal'), width=40).pack()
         def call(*args):
             for l in list(root.children.values()):
-                print(l,type(l))
 
                 if type(l)==tkinter.Listbox or type(l)== tkinter.Scrollbar or type(l)==tkinter.Text or\
                         type(l)==tk.Button:
@@ -105,5 +110,3 @@ class main():
                  pady=15).pack()
 
 
-m=main()
-m.begin()

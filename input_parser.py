@@ -35,9 +35,11 @@ class InputParser:
             if len(equations[i]) != 0 and equations[i][0] != '+' and equations[i][0] != '-':
                 equations[i] = equations[i].replace(" ", "")
                 equations[i] = f'+{equations[i]}'
-        print(equations)
+        #print(equations)
 
     def get_coefficient_matrix(self, list_of_equations: list):
+
+        self.prepare_equations(list_of_equations)
 
         index_dictionary = self.index_dictionary(list_of_equations)
 
@@ -113,7 +115,7 @@ class InputParser:
         return dictionaryIndex
 
 
-input_parser = InputParser()
+"""input_parser = InputParser()
 list_of_equations = ["25*a+5*b+c-106.8", "64*a+8*b+c-177.2", "144*a+12*b+c-279.2"]
 input_parser.prepare_equations(list_of_equations)
 matrix, results = input_parser.get_coefficient_matrix(list_of_equations)
@@ -121,4 +123,4 @@ gaussian_elemination = GaussianElimination(matrix, results)
 print(gaussian_elemination.solve())
 print_matrix(gaussian_elemination.matrix)
 print(matrix)
-print(results)
+print(results)"""

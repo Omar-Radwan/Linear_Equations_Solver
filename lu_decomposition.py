@@ -4,7 +4,7 @@ from matrix_solver import MatrixSolver, print_matrix, multiply
 
 
 class LuDecomposition(MatrixSolver):
-    def __init__(self, matrix: [], result: []):
+    def __init__(self, matrix: [], result: [], iterations=50):
         super().__init__(matrix, result)
         self.l = [[0 if (i != j) else 1 for j in range(self.SIZE)] for i in range(self.SIZE)]
         self.u = copy.deepcopy(self.matrix)

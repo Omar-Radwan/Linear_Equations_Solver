@@ -5,7 +5,6 @@ class GaussSeidel(MatrixSolver):
     def __init__(self, matrix: [], result: [], iterations=50):
         super().__init__(matrix, result)
         self.solution = [0 for i in range(self.SIZE)]
-        self.iterations = iterations
 
     def do_iteration(self):
         for row in range(self.SIZE):

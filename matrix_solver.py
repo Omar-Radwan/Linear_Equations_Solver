@@ -17,10 +17,12 @@ def print_matrix(mat_a: []):
 
 
 class MatrixSolver():
-    def __init__(self, matrix: [], result: []):
+    def __init__(self, matrix: [], result: [],iterations=50):
         self.matrix = copy.deepcopy(matrix)
         self.result = copy.deepcopy(result)
         self.SIZE = len(self.matrix)
+        self.iterations = iterations
+
 
     def __obtain_zero(self, row: int, col: int, pivot_row: int):
         # TODO: check for division by 0

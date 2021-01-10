@@ -4,7 +4,7 @@ from matrix_solver import MatrixSolver
 
 
 class GaussianElimination(MatrixSolver):
-    def __init__(self, matrix: [], result: []):
+    def __init__(self, matrix: [], result: [], iterations=50):
         super().__init__(matrix, result)
 
     def solve(self):
