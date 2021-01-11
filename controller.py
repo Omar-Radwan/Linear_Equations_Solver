@@ -29,7 +29,10 @@ class controller:
         return method
 
     def solve(self,method_object):
-        print(method_object.solve())
+        try:
+            print(method_object.solve())
+        except:
+            print("Enter a valid method.")
         #to be sent to output gui
 
 
