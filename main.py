@@ -62,9 +62,9 @@ class gui():
 
 
         self.frame.pack()
-        buttonCommit = Button(root, height=1, width=10, text="Solve",
+        button_commit = Button(root, height=1, width=10, text="Solve",
                               command=lambda: retrieve_input())
-        buttonCommit.pack()
+        button_commit.pack()
 
         def retrieve_input():
 

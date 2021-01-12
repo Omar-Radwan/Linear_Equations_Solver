@@ -2,22 +2,21 @@ from main import gui
 from input_parser import InputParser
 from factory import Factory
 from matrix_solver import MatrixSolver
-from output import Output
+#from output import Output
 import time
 from read_from_file import ReadFromFile
-from output_all import OutputAll
-
+from output import Output
 class controller:
+
 
     def begin(self):
 
         equation_list,method_string=self.get_input()
         index_dictionary,matrix,results=self.parse_input(equation_list)
         method_object=self.method_type(matrix,results,method_string)
-        t1 = time.time()
-        roots=self.solve(method_object)
-        totalTime = time.time() - t1
-        self.display_output(roots,"100",totalTime,index_dictionary)
+        roots,total_time=self.solve(method_object)
+        print(roots)
+        self.display_output(roots,"100",total_time,index_dictionary)
 
     def get_input(self):
         gui_object = gui()
@@ -44,20 +43,21 @@ class controller:
 
     def solve(self,method_object):
         roots=[]
+        total_time=[]
         for i in range(len(method_object)):
-            roots.append(method_object[i].solve())
-        try:
-            print(method_object.solve())
-        except:
-            print("Enter a valid method.")
-        return roots
+            t1 = time.time()
+            try:
+                roots.append(method_object[i].solve())
+            except:
+                print("Enter a valid method.")
+            total_time.append(time.time()-t1)
 
-    def display_output(self,roots,precision,time,index_dictionary):
-        if len(roots)>1:
-            output=OutputAll()
-        else:
-            output = Output()
-        output.begin(time, roots, precision, index_dictionary)
+        return roots,total_time
+
+    def display_output(self,roots,precision,total_time,index_dictionary):
+
+        output = Output()
+        output.begin(total_time, roots,  index_dictionary,precision)
 
 
 
