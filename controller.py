@@ -46,6 +46,10 @@ class controller:
         roots=[]
         for i in range(len(method_object)):
             roots.append(method_object[i].solve())
+        try:
+            print(method_object.solve())
+        except:
+            print("Enter a valid method.")
         return roots
 
     def display_output(self,roots,precision,time,index_dictionary):
@@ -54,6 +58,7 @@ class controller:
         else:
             output = Output()
         output.begin(time, roots, precision, index_dictionary)
+
 
 
 c=controller()
