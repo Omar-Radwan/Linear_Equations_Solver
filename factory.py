@@ -8,15 +8,19 @@ class Factory():
     def method_type(self,matrix,result,method):
 
         if method=="Guass Elimination":
-            return GaussianElimination(matrix,result)
+            return [GaussianElimination(matrix,result)]
 
         elif method=="Guass Jordan":
-            return GaussJordan(matrix,result)
+            return [GaussJordan(matrix,result)]
 
         elif method=="Guass Seidel":
-            return GaussSeidel(matrix,result)
+            return [GaussSeidel(matrix,result)]
 
         elif method=="LU decomposition":
-            return LuDecomposition(matrix,result)
+            return [LuDecomposition(matrix,result)]
+
+        elif method=="All":
+            return [GaussianElimination(matrix,result),GaussJordan(matrix,result),
+                    GaussSeidel(matrix,result),LuDecomposition(matrix,result)]
 
 

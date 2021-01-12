@@ -11,6 +11,16 @@ NUMBER_AND_VARIABLE=3
 
 class InputParser:
 
+    def get_inputs(self,list_of_equations):
+        self.prepare_equations(list_of_equations)
+        index_dictionary=self.index_dictionary(list_of_equations)
+        matrix,results=self.get_coefficient_matrix(list_of_equations,index_dictionary)
+        print(index_dictionary)
+        print(matrix)
+        print(results)
+        return index_dictionary,matrix,results
+
+
     #type 1:single variable,type 2:single number,type 3:variable with number
     def get_type(self,splitted_term):
         if len(splitted_term)==1:
@@ -37,11 +47,7 @@ class InputParser:
                 equations[i] = f'+{equations[i]}'
         #print(equations)
 
-    def get_coefficient_matrix(self, list_of_equations: list):
-
-        self.prepare_equations(list_of_equations)
-
-        index_dictionary = self.index_dictionary(list_of_equations)
+    def get_coefficient_matrix(self, list_of_equations: list,index_dictionary):
 
         number_of_equations = len(list_of_equations)
         matrix = [[0 for j in range(number_of_equations)] for i in range(number_of_equations)]
@@ -117,6 +123,7 @@ class InputParser:
 
 """input_parser = InputParser()
 list_of_equations = ["25*a+5*b+c-106.8", "64*a+8*b+c-177.2", "144*a+12*b+c-279.2"]
+input_parser.get_inputs(list_of_equations)
 input_parser.prepare_equations(list_of_equations)
 matrix, results = input_parser.get_coefficient_matrix(list_of_equations)
 gaussian_elemination = GaussianElimination(matrix, results)

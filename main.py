@@ -23,18 +23,27 @@ class gui():
     ]
     equationsList = []
     frame = ScrollableFrame(root)
+    read_from_file=False
 
     def begin(self):
-
+        self.makeLabelPackVertical(root, tk, "Solving linear equations", 60)
+        self.file_button()
         self.takeInputs()
         self.chooseMethod()
+
+
         root.geometry("900x650")
         root.mainloop()
-        #return self.equationsList,self.method
 
-    def check(self):
+    def file_button(self):
 
-        root.destroy()
+        button1 = Checkbutton(root, text="File",command=lambda: read_file(), height=1, width=10)
+        button1.pack()
+        def read_file():
+            self.read_from_file=True
+            root.destroy()
+
+
 
     def makeTable(self):
         self.frame = ScrollableFrame(root)
@@ -54,9 +63,8 @@ class gui():
 
         self.frame.pack()
         buttonCommit = Button(root, height=1, width=10, text="Solve",
-                              command=lambda: retrieve_input()).pack()
-
-
+                              command=lambda: retrieve_input())
+        buttonCommit.pack()
 
         def retrieve_input():
 
@@ -80,23 +88,24 @@ class gui():
         self.method.trace("w", callback)
 
     def takeInputs(self):
-        self.makeLabelPackVertical(root, tk, "Solving non linear equations", 70)
         self.makeLabelPackVertical(root, tk, "Maximum iterations :", 20)
         name_entry = tk.Entry(root, textvariable=self.maximumIterations, font=('calibre', 10, 'normal'), width=40).pack()
         self.makeLabelPackVertical(root, tk, "Precision :", 20)
         name_entry = tk.Entry(root, textvariable=self.precision, font=('calibre', 10, 'normal'), width=40).pack()
         self.makeLabelPackVertical(root, tk, "Number of equations :", 20)
         name_entry = tk.Entry(root, textvariable=self.numberOfEquations, font=('calibre', 10, 'normal'), width=40).pack()
-        def call(*args):
-            for l in list(root.children.values()):
 
-                if type(l)==tkinter.Listbox or type(l)== tkinter.Scrollbar or type(l)==tkinter.Text or\
+        def call(*args):
+
+           for l in list(root.children.values()):
+
+               if type(l)==tkinter.Listbox  or type(l)==tkinter.Text or\
                         type(l)==tk.Button:
                     l.destroy()
                     self.frame.destroy()
 
 
-            if self.numberOfEquations.get() != "":
+           if self.numberOfEquations.get() != "":
                 self.makeTable()
 
         self.numberOfEquations.trace("w", call)
@@ -107,6 +116,6 @@ class gui():
                  justify=tk.CENTER,
                  padx=0,
                  font=font,
-                 pady=15).pack()
+                 pady=10).pack()
 
 
