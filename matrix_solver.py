@@ -17,18 +17,28 @@ def print_matrix(mat_a: []):
 
 
 class MatrixSolver():
-    def __init__(self, matrix: [], result: [],iterations=50):
+    def __init__(self, matrix: [], result: [], iterations=50):
         self.matrix = copy.deepcopy(matrix)
         self.result = copy.deepcopy(result)
         self.SIZE = len(self.matrix)
         self.iterations = iterations
+        self.division_by_zero = False
 
+    def apply_pivoting(self):
+        self.matrix = sorted(self.matrix, reverse=True, key=lambda x: x[0])
+
+    def divide(self, x, y):
+        if y == 0:
+            self.division_by_zero = True
+            return 1
+        else:
+            return x / y
 
     def __obtain_zero(self, row: int, col: int, pivot_row: int):
-        # TODO: check for division by 0
         if self.matrix[row][col] == 0:
             return True
-        ratio = (-self.matrix[row][col] / self.matrix[pivot_row][col])
+
+        ratio = self.divide(-self.matrix[row][col], self.matrix[pivot_row][col])
         for cur_col in range(len(self.matrix[row])):
             self.matrix[row][cur_col] += ratio * self.matrix[pivot_row][cur_col]
 
@@ -49,14 +59,14 @@ class MatrixSolver():
 
     def back_substitution(self):
         for col in range(self.SIZE - 1, -1, -1):
-            self.result[col] /= self.matrix[col][col]
+            self.result[col] = self.divide(self.result[col], self.matrix[col][col])
             for row in range(col - 1, -1, -1):
                 self.result[row] -= (self.result[col] * self.matrix[row][col])
         return self.result
 
     def forward_substitution(self):
         for col in range(0, self.SIZE):
-            self.result[col] /= self.matrix[col][col]
+            self.result[col] = self.divide(self.result[col], self.matrix[col][col])
             for row in range(col + 1, self.SIZE):
                 self.result[row] -= (self.result[col] * self.matrix[row][col])
         return self.result
@@ -74,9 +84,7 @@ class MatrixSolver():
         for row in range(self.SIZE):
             divisor = self.matrix[row][row]
             for col in range(len(self.matrix[row])):
-                self.matrix[row][col] /= divisor
-
-
+                self.matrix[row][col] = self.divide(self.matrix[row][col], divisor)
 
     def solve(self):
         pass

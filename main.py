@@ -8,7 +8,6 @@ from area import ScrollableFrame
 root = tk.Tk()
 
 
-
 class gui():
     maximumIterations = tk.IntVar()
     precision = tk.DoubleVar()
@@ -23,7 +22,9 @@ class gui():
     ]
     equationsList = []
     frame = ScrollableFrame(root)
-    read_from_file=False
+    read_from_file = False
+    initials=[]
+
 
     def begin(self):
         self.makeLabelPackVertical(root, tk, "Solving linear equations", 60)
@@ -31,39 +32,35 @@ class gui():
         self.takeInputs()
         self.chooseMethod()
 
-
         root.geometry("900x650")
         root.mainloop()
 
     def file_button(self):
 
-        button1 = Checkbutton(root, text="File",command=lambda: read_file(), height=1, width=10)
+        button1 = Checkbutton(root, text="File", command=lambda: read_file(), height=1, width=10)
         button1.pack()
+
         def read_file():
-            self.read_from_file=True
+            self.read_from_file = True
             root.destroy()
-
-
 
     def makeTable(self):
         self.frame = ScrollableFrame(root)
-        n=int(self.numberOfEquations.get())
-        self.equationsList=[]
-        lis=[]
-
+        n = int(self.numberOfEquations.get())
+        self.equationsList = []
+        lis = []
 
         for i in range(n):
-            listBox = Listbox(self.frame.scrollable_frame, height=1,width=53)
+            listBox = Listbox(self.frame.scrollable_frame, height=1, width=53)
             listBox.insert(END, "Equation %s :" % (i + 1))
             textBox = Text(self.frame.scrollable_frame, width=40, height=2)
             listBox.pack(pady=10)
             textBox.pack(pady=10)
             lis.append(textBox)
 
-
         self.frame.pack()
         button_commit = Button(root, height=1, width=10, text="Solve",
-                              command=lambda: retrieve_input())
+                               command=lambda: retrieve_input())
         button_commit.pack()
 
         def retrieve_input():
@@ -89,28 +86,29 @@ class gui():
 
     def takeInputs(self):
         self.makeLabelPackVertical(root, tk, "Maximum iterations :", 20)
-        name_entry = tk.Entry(root, textvariable=self.maximumIterations, font=('calibre', 10, 'normal'), width=40).pack()
+        name_entry = tk.Entry(root, textvariable=self.maximumIterations, font=('calibre', 10, 'normal'),
+                              width=40).pack()
         self.makeLabelPackVertical(root, tk, "Precision :", 20)
         name_entry = tk.Entry(root, textvariable=self.precision, font=('calibre', 10, 'normal'), width=40).pack()
         self.makeLabelPackVertical(root, tk, "Number of equations :", 20)
-        name_entry = tk.Entry(root, textvariable=self.numberOfEquations, font=('calibre', 10, 'normal'), width=40).pack()
+        name_entry = tk.Entry(root, textvariable=self.numberOfEquations, font=('calibre', 10, 'normal'),
+                              width=40).pack()
 
         def call(*args):
 
-           for l in list(root.children.values()):
+            for l in list(root.children.values()):
 
-               if type(l)==tkinter.Listbox  or type(l)==tkinter.Text or\
-                        type(l)==tk.Button:
+                if type(l) == tkinter.Listbox or type(l) == tkinter.Text or \
+                        type(l) == tk.Button:
                     l.destroy()
                     self.frame.destroy()
 
-
-           if self.numberOfEquations.get() != "":
+            if self.numberOfEquations.get() != "":
                 self.makeTable()
 
         self.numberOfEquations.trace("w", call)
 
-    def makeLabelPackVertical(self,rootObject, tk, text, font):
+    def makeLabelPackVertical(self, rootObject, tk, text, font):
         tk.Label(rootObject,
                  text=text,
                  justify=tk.CENTER,
@@ -119,3 +117,13 @@ class gui():
                  pady=10).pack()
 
 
+# TODO: pivoting
+# TODO: check if there is a solution
+
+"""
+GaussSiedelIteration:
+    id of itertaion
+    values -> array shabah al result
+    errors -> array shabah al result
+    max error -> rakam
+"""

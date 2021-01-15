@@ -1,10 +1,18 @@
+import copy
+
+from gauss_seidel_iteration import GaussSeidelIteration
 from matrix_solver import MatrixSolver
 
 
 class GaussSeidel(MatrixSolver):
-    def __init__(self, matrix: [], result: [], iterations=50):
+    def __init__(self, matrix: [], result: [], initials=None, iterations=50):
         super().__init__(matrix, result)
-        self.solution = [0 for i in range(self.SIZE)]
+        self.iterations_list = []
+        self.prev_solution = []
+        if initials is None:
+            self.solution = [0 for i in range(self.SIZE)]
+        else:
+            self.solution = copy.deepcopy(initials)
 
     def do_iteration(self):
         for row in range(self.SIZE):
@@ -15,7 +23,16 @@ class GaussSeidel(MatrixSolver):
             cur_solution /= self.matrix[row][row]
             self.solution[row] = cur_solution
 
+    def calculate_error(self):
+        error = []
+        for variable_index in range(self.SIZE):
+            error.append(abs(self.solution[variable_index] - self.prev_solution[variable_index]))
+        return GaussSeidelIteration(self.solution, error)
+
     def solve(self):
-        for i in range(self.iterations):
+        for iteration in range(self.iterations):
             self.do_iteration()
+            if iteration > 0:
+                self.iterations_list.append(self.calculate_error())
+            self.prev_solution = copy.deepcopy(self.solution)
         return self.solution

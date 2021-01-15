@@ -3,8 +3,8 @@ import re
 from gauss_elimination import GaussianElimination
 from matrix_solver import print_matrix
 
-TERM_PATTERN = r'([+-][\d]{0,}[\.?[\d]{0,}]{0,}[*]?[a-zA-Z]?)'
-NUMBER_PATTERN = r'([-+]?\d+[\.?[\d]{0,}]{0,})'
+TERM_PATTERN = r'([+-][\d]*[\.?[\d]*]*[*]?[a-zA-Z]?)'
+NUMBER_PATTERN = r'([-+]?\d+[\.?[\d]*]*)'
 VARIABLE_ONLY=1
 NUMBER_ONLY=2
 NUMBER_AND_VARIABLE=3
