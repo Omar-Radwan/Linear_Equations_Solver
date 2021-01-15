@@ -11,6 +11,13 @@ NUMBER_AND_VARIABLE=3
 
 class InputParser:
 
+    def get_inputs(self,list_of_equations):
+        self.prepare_equations(list_of_equations)
+        index_dictionary=self.index_dictionary(list_of_equations)
+        matrix,results=self.get_coefficient_matrix(list_of_equations,index_dictionary)
+        return index_dictionary,matrix,results
+
+
     #type 1:single variable,type 2:single number,type 3:variable with number
     def get_type(self,splitted_term):
         if len(splitted_term)==1:
@@ -37,11 +44,7 @@ class InputParser:
                 equations[i] = f'+{equations[i]}'
         #print(equations)
 
-    def get_coefficient_matrix(self, list_of_equations: list):
-
-        self.prepare_equations(list_of_equations)
-
-        index_dictionary = self.index_dictionary(list_of_equations)
+    def get_coefficient_matrix(self, list_of_equations: list,index_dictionary):
 
         number_of_equations = len(list_of_equations)
         matrix = [[0 for j in range(number_of_equations)] for i in range(number_of_equations)]
@@ -72,51 +75,41 @@ class InputParser:
 
         return matrix, results
 
-    # The equation which have all variables.
-    def is_complete_equation(self, terms, number_of_variables):
-
-        if len(terms) == number_of_variables + 1:
-            return True
-
-        elif len(terms) == number_of_variables:
-            for term in terms:
-                splitted_term = term.split('*')
-                if len(splitted_term) == 1 and self.is_digit(splitted_term[0]):
-                    return False
-            return True
-
-        return False
-
     # return index dictionary.
     def index_dictionary(self, list_of_equations):
 
         dictionaryIndex = {}
-        number_of_variables = len(list_of_equations)
+        i = 0
 
         for equation in list_of_equations:
             terms = re.findall(TERM_PATTERN, equation)
 
-            if self.is_complete_equation(terms, number_of_variables):
+            for term in terms:
+                splitted_term = term.split('*')
+                if self.get_type(splitted_term) == VARIABLE_ONLY:
+                     variable = splitted_term[0][1]
+                     dictionaryIndex,i=self.put_in_dictionary(dictionaryIndex,i,variable)
+                elif self.get_type(splitted_term) ==NUMBER_AND_VARIABLE:
+                     variable = splitted_term[1]
+                     dictionaryIndex,i=self.put_in_dictionary(dictionaryIndex,i,variable)
 
-                for i in range(len(terms)):
-                    term = terms[i]
-                    splitted_term = term.split('*')
 
-                    # variable with coefficient = 1
-                    if self.get_type(splitted_term) ==VARIABLE_ONLY:
-                        variable = splitted_term[0][1]
-                        dictionaryIndex[variable] = i
-                    elif self.get_type(splitted_term) ==NUMBER_AND_VARIABLE:
-                        variable = splitted_term[1]
-                        dictionaryIndex[variable] = i
 
-                break
         print(dictionaryIndex)
         return dictionaryIndex
 
 
+    def put_in_dictionary(self,dictionary_index:{},i,variable):
+        if not variable in dictionary_index.keys():
+            dictionary_index[variable] = i
+            i += 1
+        return dictionary_index,i
+
+
 """input_parser = InputParser()
-list_of_equations = ["25*a+5*b+c-106.8", "64*a+8*b+c-177.2", "144*a+12*b+c-279.2"]
+list_of_equations = ["25*a+5*b+c-106.8", "64*a+8*b+c-177.2", "144*a+12*b+c-279.2","4*a+12*b+c+f-279.2",
+                     "4*a+12*b+c+f+z-279.2"]
+input_parser.get_inputs(list_of_equations)
 input_parser.prepare_equations(list_of_equations)
 matrix, results = input_parser.get_coefficient_matrix(list_of_equations)
 gaussian_elemination = GaussianElimination(matrix, results)
