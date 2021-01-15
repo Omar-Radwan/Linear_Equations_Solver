@@ -9,9 +9,7 @@ class GaussianEliminationPivoting(MatrixSolver):
 
     def solve(self):
         self.build_augmented_matrix()
-        self.apply_pivoting()
-        print_matrix(self.matrix)
-        self.build_lower_zeros()
+        self.build_lower_zeros_with_pivoting()
         self.separate_augmented_matrix()
         self.back_substitution()
         return self.result

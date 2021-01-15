@@ -6,10 +6,11 @@ from area import ScrollableFrame
 
 class Output():
     def __init__(self):
-        self.methods_list = ["Guass Elimination", "Guass Jordan", "Guass Seidel", "LU decomposition"]
+        self.methods_list = ["Guass Seidel","Guass Elimination", "Guass Jordan",  "LU decomposition"]
 
-    def begin(self, total_time: [], approximate_roots_lists: [], index_dictionary: [], precision):
+    def begin(self, total_time: [], approximate_roots_lists: [], index_dictionary: [],iterations_list:[], precision):
         root = tk.Tk()
+        print(iterations_list)
 
         canvas = tk.Canvas(root)
         scroll_y = tk.Scrollbar(root, orient="vertical", command=canvas.yview)

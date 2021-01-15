@@ -10,10 +10,9 @@ class LuDecomposition(MatrixSolver):
         self.u = copy.deepcopy(self.matrix)
 
     def __obtain_zero_and_build_l(self, row: int, col: int, pivot_row: int):
-        # TODO: check for division by 0
         if self.matrix[row][col] == 0:
             return True
-        ratio = (-self.matrix[row][col] / self.matrix[pivot_row][col])
+        ratio = self.divide(-self.matrix[row][col], self.matrix[pivot_row][col])
         self.l[row][col] = -ratio
         for cur_col in range(len(self.matrix[row])):
             self.matrix[row][cur_col] += ratio * self.matrix[pivot_row][cur_col]
