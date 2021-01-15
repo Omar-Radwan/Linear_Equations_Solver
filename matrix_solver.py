@@ -24,6 +24,9 @@ class MatrixSolver():
         self.iterations = iterations
         self.division_by_zero = False
 
+    def apply_pivoting(self):
+        self.matrix = sorted(self.matrix, reverse=True, key=lambda x: x[0])
+
     def divide(self, x, y):
         if y == 0:
             self.division_by_zero = True
