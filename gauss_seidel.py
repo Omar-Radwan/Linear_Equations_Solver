@@ -20,7 +20,7 @@ class GaussSeidel(MatrixSolver):
             for col in range(self.SIZE):
                 if row != col:
                     cur_solution -= (self.solution[col] * self.matrix[row][col])
-            cur_solution /= self.matrix[row][row]
+            cur_solution = self.divide(cur_solution, self.matrix[row][row])
             self.solution[row] = cur_solution
 
     def calculate_error(self):
@@ -30,7 +30,7 @@ class GaussSeidel(MatrixSolver):
         return GaussSeidelIteration(self.solution, error)
 
     def solve(self):
-        for iteration in range(self.iterations):
+        for iteration in range(self.iterations + 1):
             self.do_iteration()
             if iteration > 0:
                 self.iterations_list.append(self.calculate_error())

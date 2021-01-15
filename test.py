@@ -9,6 +9,7 @@ matrix = [[12, 3, -5],
           [1, 5, 3],
           [3, 7, 13]]
 result = [1, 28, 76]
+
 gaussian_elimination = GaussianElimination(matrix, result)
 gauss_jordan = GaussJordan(matrix, result)
 lu_decomposition = LuDecomposition(matrix, result)
@@ -20,5 +21,3 @@ print(gauss_jordan.solve())
 print(lu_decomposition.solve())
 print(gauss_seidel.solve())
 print(gauss_elimination_pivoting.solve())
-for i in gauss_seidel.iterations_list:
-    print(i)

@@ -1,4 +1,5 @@
 import copy
+import heapq
 
 
 def multiply(mat_a: [], mat_b: []):
@@ -24,9 +25,6 @@ class MatrixSolver():
         self.iterations = iterations
         self.division_by_zero = False
 
-    def apply_pivoting(self):
-        self.matrix = sorted(self.matrix, reverse=True, key=lambda x: x[0])
-
     def divide(self, x, y):
         if y == 0:
             self.division_by_zero = True
@@ -46,6 +44,25 @@ class MatrixSolver():
         for row in range(self.SIZE - 1, 0, -1):
             self.__obtain_zero(row, 0, 0)
         for col in range(1, self.SIZE - 1):
+            for row in range(self.SIZE - 1, col, -1):
+                self.__obtain_zero(row, col, row - 1)
+
+    def apply_pivoting(self, from_row, to_row, column):
+        sorted_indices = []
+        old_matrix = copy.deepcopy(self.matrix)
+        for row in range(from_row, to_row + 1):
+            heapq.heappush(sorted_indices, (-self.matrix[row][column], row))
+
+        for row in range(from_row, to_row + 1):
+            max_row_index = heapq.heappop(sorted_indices)[1]
+            self.matrix[row] = old_matrix[max_row_index]
+
+    def build_lower_zeros_with_pivoting(self):
+        self.apply_pivoting(0, self.SIZE - 1, 0)
+        for row in range(self.SIZE - 1, 0, -1):
+            self.__obtain_zero(row, 0, 0)
+        for col in range(1, self.SIZE - 1):
+            self.apply_pivoting(col + 1, self.SIZE - 1, col)
             for row in range(self.SIZE - 1, col, -1):
                 self.__obtain_zero(row, col, row - 1)
 

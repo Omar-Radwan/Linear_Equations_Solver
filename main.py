@@ -126,7 +126,7 @@ class gui():
                  pady=10).pack()
 
 
-# TODO: pivoting
+
 # TODO: check if there is a solution
 
 """
