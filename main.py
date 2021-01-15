@@ -57,6 +57,12 @@ class gui():
             listBox.pack(pady=10)
             textBox.pack(pady=10)
             lis.append(textBox)
+        listBox = Listbox(self.frame.scrollable_frame, height=1, width=53)
+        listBox.insert(END, "Seidel initials :")
+        textBox = Text(self.frame.scrollable_frame, width=40, height=2)
+        listBox.pack(pady=10)
+        textBox.pack(pady=10)
+        lis.append(textBox)
 
         self.frame.pack()
         button_commit = Button(root, height=1, width=10, text="Solve",
@@ -67,13 +73,15 @@ class gui():
 
             for i in range(n):
                 self.equationsList.append(lis[i].get("1.0", "end-1c"))
+            intials_string = lis[len(lis) - 1].get("1.0", "end-1c")
+            self.initials = intials_string.split(" ")
 
             root.destroy()
 
     def chooseMethod(self):
         self.makeLabelPackVertical(root, tk, "Choose method :", 20)
 
-        self.method.set("")
+        self.method.set("Guass Elimination")
 
         opt = tk.OptionMenu(root, self.method, *self.OptionList)
         opt.config(width=40, font=('Helvetica', 12))
@@ -81,6 +89,7 @@ class gui():
 
         def callback(*args):
             print(self.method.get())
+
 
         self.method.trace("w", callback)
 

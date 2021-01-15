@@ -5,7 +5,7 @@ from lu_decomposition import LuDecomposition
 
 class Factory():
 
-    def method_type(self,matrix,result,method):
+    def method_type(self,matrix,result,method,seidel_initials):
 
         if method=="Guass Elimination":
             return [GaussianElimination(matrix,result)]
@@ -14,13 +14,13 @@ class Factory():
             return [GaussJordan(matrix,result)]
 
         elif method=="Guass Seidel":
-            return [GaussSeidel(matrix,result)]
+            return [GaussSeidel(matrix,result,seidel_initials)]
 
         elif method=="LU decomposition":
             return [LuDecomposition(matrix,result)]
 
         elif method=="All":
-            return [GaussianElimination(matrix,result),GaussJordan(matrix,result),
-                    GaussSeidel(matrix,result),LuDecomposition(matrix,result)]
+            return [GaussSeidel(matrix,result),GaussianElimination(matrix,result),GaussJordan(matrix,result),
+                    LuDecomposition(matrix,result)]
 
 
