@@ -3,8 +3,14 @@ import tkinter as tk
 from tkinter import *
 import area
 from area import ScrollableFrame
-
+from pandas import DataFrame
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 class Output():
+    def __init__(self):
+        self.value_list=[]
+        self.points=[]
+        self.iterations=[i+1 for i in range(50)]
 
     def begin(self, total_time: [], approximate_roots_lists: [], index_dictionary: [],iterations_list:[],method_list:[], precision):
         root = tk.Tk()
@@ -39,6 +45,13 @@ class Output():
         if method_name=="Guass Seidel" or method_name=="All":
             self.make_label_pack_vertical(root,tk,"-----------------------------------------",10)
             self.iterations_table(root,iterations_list,index_dictionary)
+            self.set_points()
+            keys_list = list(index_dictionary)
+            for i in range(len(self.points)):
+                point=self.points[i]
+                variable=keys_list[i]
+                print(variable)
+                self.graph(root,point,variable)
         self.make_label_pack_vertical(root,tk,"-----------------------------------------",10)
 
 
@@ -54,17 +67,17 @@ class Output():
 
         frame.pack()
 
+
     def iterations_table(self,root,iterations_list,index_dictionary):
         frame = ScrollableFrame(root)
 
 
         for i in range(len(iterations_list)):
             iteration=iterations_list[i]
-            print(iteration.values)
             values=iteration.values
             errors=iteration.errors
             max_error=iteration.max_error
-
+            self.value_list.append(values)
             keys_list = list(index_dictionary)
 
             listBox = Listbox(frame.scrollable_frame, height=1, width=53, font=20)
@@ -85,10 +98,29 @@ class Output():
 
 
         frame.pack()
-    def list_box(self,string,frame):
-        listBox = Listbox(frame, height=1, width=53, font=20)
-        listBox.insert(END, string)
-        listBox.pack(pady=20, padx=50)
+
+    def graph(self,root,point,variable):
+        print(self.iterations)
+        data2 = {'iterations': self.iterations
+            , variable: point
+                 }
+        df2 = DataFrame(data2, columns=[variable, 'iterations'])
+
+        figure2 = plt.Figure(figsize=(5, 4), dpi=100)
+        ax2 = figure2.add_subplot(111)
+        line2 = FigureCanvasTkAgg(figure2, root)
+        line2.get_tk_widget().pack(fill=tk.BOTH,pady=20)
+        df2 = df2[['iterations', variable]].groupby('iterations').sum()
+        df2.plot(kind='line', legend=True, ax=ax2, color='r', marker='o', fontsize=10)
+        ax2.set_title('variable Vs. iterations')
+
+
+    def set_points(self):
+        n = len(self.value_list[0])
+        self.points = [[0 for j in range(50)] for i in range(n)]
+        for i in range(len(self.points)):
+            for j in range(len(self.value_list)):
+                self.points[i][j] = self.value_list[j][i]
 
     def make_label_pack_vertical(self,rootObject, tk, text, font):
         tk.Label(rootObject,
