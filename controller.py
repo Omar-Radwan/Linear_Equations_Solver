@@ -11,14 +11,20 @@ from output import Output
 class Controller:
 
     def begin(self):
-
+        iterations_list = []
         equation_list, method_string, seidel_initials = self.get_input()
+        method_list=[method_string]
         index_dictionary, matrix, results = self.parse_input(equation_list)
         method_object = self.method_type(matrix, results, method_string, seidel_initials)
         roots, total_time = self.solve(method_object)
-        if method_string == "Guass Seidel" or method_string=="All":
+        if method_string == "Guass Seidel" :
             iterations_list = method_object[0].iterations_list
-        self.display_output(roots, "100", total_time, index_dictionary, iterations_list)
+        elif method_string=="All":
+            iterations_list = method_object[0].iterations_list
+            method_list=["Guass Seidel","Guass Elimination", "Guass Jordan",  "LU decomposition"]
+
+
+        self.display_output(roots, "100", total_time, index_dictionary, iterations_list,method_list)
 
     def get_input(self):
         gui_object = gui()
@@ -49,15 +55,15 @@ class Controller:
         total_time = []
         for i in range(len(method_object)):
             t1 = time.time()
-            try:
-                roots.append(method_object[i].solve())
-            except:
-                print("Enter a valid method.")
+            # try:
+            roots.append(method_object[i].solve())
+            # except:
+            print("Enter a valid method.")
             total_time.append(time.time() - t1)
 
         return roots, total_time
 
-    def display_output(self, roots, precision, total_time, index_dictionary, iterations_list):
 
+    def display_output(self, roots, precision, total_time, index_dictionary, iterations_list,method_list):
         output = Output()
-        output.begin(total_time, roots, index_dictionary, iterations_list, precision)
+        output.begin(total_time, roots, index_dictionary, iterations_list,method_list, precision)

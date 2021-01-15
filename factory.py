@@ -20,7 +20,7 @@ class Factory():
             return [LuDecomposition(matrix,result)]
 
         elif method=="All":
-            return [GaussSeidel(matrix,result),GaussianElimination(matrix,result),GaussJordan(matrix,result),
+            return [GaussSeidel(matrix,result,seidel_initials),GaussianElimination(matrix,result),GaussJordan(matrix,result),
                     LuDecomposition(matrix,result)]
 
 

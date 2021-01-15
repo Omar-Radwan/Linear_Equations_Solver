@@ -5,11 +5,11 @@ from matrix_solver import MatrixSolver
 
 
 class GaussSeidel(MatrixSolver):
-    def __init__(self, matrix: [], result: [], initials=None, iterations=50):
+    def __init__(self, matrix: [], result: [], initials, iterations=50):
         super().__init__(matrix, result)
         self.iterations_list = []
         self.prev_solution = []
-        if initials is None:
+        if len(initials) == 0:
             self.solution = [0 for i in range(self.SIZE)]
         else:
             self.solution = copy.deepcopy(initials)

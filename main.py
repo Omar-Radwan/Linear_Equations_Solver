@@ -73,8 +73,13 @@ class gui():
 
             for i in range(n):
                 self.equationsList.append(lis[i].get("1.0", "end-1c"))
+
             intials_string = lis[len(lis) - 1].get("1.0", "end-1c")
-            self.initials = intials_string.split(" ")
+            if intials_string!='':
+                self.initials = intials_string.split(" ")
+                self.initials = [float(i) for i in self.initials]
+
+            print(self.initials)
 
             root.destroy()
 
