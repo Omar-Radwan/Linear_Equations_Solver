@@ -24,21 +24,8 @@ class MatrixSolver():
         self.SIZE = len(self.matrix)
         self.iterations = iterations
         self.division_by_zero = False
-
-    def divide(self, x, y):
-        if y == 0:
-            self.division_by_zero = True
-            return 1
-        else:
-            return x / y
-
-    def __obtain_zero(self, row: int, col: int, pivot_row: int):
-        if self.matrix[row][col] == 0:
-            return True
-
-        ratio = self.divide(-self.matrix[row][col], self.matrix[pivot_row][col])
-        for cur_col in range(len(self.matrix[row])):
-            self.matrix[row][cur_col] += ratio * self.matrix[pivot_row][cur_col]
+        self.infinite_solutions = False
+        self.no_solution = False
 
     def build_lower_zeros(self):
         for row in range(self.SIZE - 1, 0, -1):
@@ -47,22 +34,12 @@ class MatrixSolver():
             for row in range(self.SIZE - 1, col, -1):
                 self.__obtain_zero(row, col, row - 1)
 
-    def apply_pivoting(self, from_row, to_row, column):
-        sorted_indices = []
-        old_matrix = copy.deepcopy(self.matrix)
-        for row in range(from_row, to_row + 1):
-            heapq.heappush(sorted_indices, (-self.matrix[row][column], row))
-
-        for row in range(from_row, to_row + 1):
-            max_row_index = heapq.heappop(sorted_indices)[1]
-            self.matrix[row] = old_matrix[max_row_index]
-
     def build_lower_zeros_with_pivoting(self):
-        self.apply_pivoting(0, self.SIZE - 1, 0)
+        self.__apply_pivoting(0, self.SIZE - 1, 0)
         for row in range(self.SIZE - 1, 0, -1):
             self.__obtain_zero(row, 0, 0)
         for col in range(1, self.SIZE - 1):
-            self.apply_pivoting(col + 1, self.SIZE - 1, col)
+            self.__apply_pivoting(col + 1, self.SIZE - 1, col)
             for row in range(self.SIZE - 1, col, -1):
                 self.__obtain_zero(row, col, row - 1)
 
@@ -75,7 +52,11 @@ class MatrixSolver():
                 self.__obtain_zero(row, col, row + 1)
 
     def back_substitution(self):
+        """"
+        AX=B
+        """
         for col in range(self.SIZE - 1, -1, -1):
+            self.check_solvability(self.matrix[col][col], self.result[col])
             self.result[col] = self.divide(self.result[col], self.matrix[col][col])
             for row in range(col - 1, -1, -1):
                 self.result[row] -= (self.result[col] * self.matrix[row][col])
@@ -83,6 +64,7 @@ class MatrixSolver():
 
     def forward_substitution(self):
         for col in range(0, self.SIZE):
+            self.check_solvability(self.matrix[col][col], self.result[col])
             self.result[col] = self.divide(self.result[col], self.matrix[col][col])
             for row in range(col + 1, self.SIZE):
                 self.result[row] -= (self.result[col] * self.matrix[row][col])
@@ -97,11 +79,43 @@ class MatrixSolver():
             self.result[row] = self.matrix[row][-1]
             self.matrix[row].pop()
 
-    def obtain_main_diagonal_ones(self):
+    def obtain_ones_in_the_main_diagonal(self):
         for row in range(self.SIZE):
             divisor = self.matrix[row][row]
             for col in range(len(self.matrix[row])):
                 self.matrix[row][col] = self.divide(self.matrix[row][col], divisor)
+
+    def divide(self, x, y):
+        if y == 0:
+            self.division_by_zero = True
+            return 1
+        else:
+            return x / y
+
+    def check_solvability(self, x, y):
+        if y == 0:
+            if x == 0:
+                self.infinite_solutions = True
+            else:
+                self.no_solution = True
+
+    def __obtain_zero(self, row: int, col: int, pivot_row: int):
+        if self.matrix[row][col] == 0:
+            return True
+
+        ratio = self.divide(-self.matrix[row][col], self.matrix[pivot_row][col])
+        for cur_col in range(len(self.matrix[row])):
+            self.matrix[row][cur_col] += ratio * self.matrix[pivot_row][cur_col]
+
+    def __apply_pivoting(self, from_row, to_row, column):
+        sorted_indices = []
+        old_matrix = copy.deepcopy(self.matrix)
+        for row in range(from_row, to_row + 1):
+            heapq.heappush(sorted_indices, (-self.matrix[row][column], row))
+
+        for row in range(from_row, to_row + 1):
+            max_row_index = heapq.heappop(sorted_indices)[1]
+            self.matrix[row] = old_matrix[max_row_index]
 
     def solve(self):
         pass
