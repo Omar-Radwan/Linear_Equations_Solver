@@ -5,19 +5,10 @@ from gauss_seidel import GaussSeidel
 from lu_decomposition import LuDecomposition
 from matrix_solver import MatrixSolver
 
-"""
+matrix = [[1,-1],
+          [5,-5]]
 
-
-"""
-matrix = [[10, 2, -1],
-          [-3, -6, 2],
-          [1, 1, 5]]
-
-matrix = [[10, 2, -1],
-          [0, -6, 2],
-          [0, 0, 5]]
-
-result = [27, -61.5, -21.5]
+result = [-3,-15]
 
 # matrix = [[12, 3, -5],
 #           [1, 5, 3],
@@ -30,11 +21,11 @@ lu_decomposition = LuDecomposition(matrix, result)
 gauss_elimination_pivoting = GaussianEliminationPivoting(matrix, result)
 gauss_seidel = GaussSeidel(matrix, result, [])
 
-print(gaussian_elimination.solve())
-print(gauss_jordan.solve())
-print(lu_decomposition.solve())
-print(gauss_elimination_pivoting.solve())
-print(gauss_seidel.solve())
-print(gauss_seidel.division_by_zero, gauss_seidel.infinite_solutions, gauss_seidel.no_solution)
+print(f'Gauss Elim: {gaussian_elimination.solve()}')
+print(f'Gauss Jordan: {gauss_jordan.solve()}')
+print(f'LU Decomp: {lu_decomposition.solve()}')
+print(f'Gauss Elim Piv: {gauss_elimination_pivoting.solve()}')
+print(f'Gauss Seidel: {gauss_seidel.solve()}')
+print(f'Gauss Sedal Flags: div_by_zero: {gauss_seidel.division_by_zero}, inf sol: {gauss_seidel.infinite_solutions}, no sol: {gauss_seidel.no_solution}')
 for i in gauss_seidel.iterations_list:
     print(i)
