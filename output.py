@@ -14,7 +14,6 @@ class Output():
 
     def begin(self, total_time: [], approximate_roots_lists: [], index_dictionary: [],iterations_list:[],method_list:[], precision):
         root = tk.Tk()
-        print(iterations_list)
 
         canvas = tk.Canvas(root)
         scroll_y = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
@@ -79,22 +78,19 @@ class Output():
             max_error=iteration.max_error
             self.value_list.append(values)
             keys_list = list(index_dictionary)
+            n=len(values)
 
-            listBox = Listbox(frame.scrollable_frame, height=1, width=53, font=20)
-            listBox.insert(END, f"iteration {i+1}")
-            listBox.pack(pady=20, padx=50)
+
+            listBox = Listbox(frame.scrollable_frame, height=2*n+2, width=53, font=20)
+            listBox.insert(1, f"iteration {i+1}")
             for j in range(len(values)):
                 value=values[j]
                 error=errors[j]
-                listBox = Listbox(frame.scrollable_frame, height=2, width=53, font=20)
-                listBox.insert(1, f" {keys_list[j]} : {value}")
-                listBox.insert(2, f"Error of {keys_list[j]} : {error}")
-                listBox.pack(pady=20, padx=50)
+                listBox.insert(END, f" {keys_list[j]} : {value}")
+                listBox.insert(END, f"Error of {keys_list[j]} : {error}")
 
-            listBox = Listbox(frame.scrollable_frame, height=1, width=53, font=20)
             listBox.insert(END, f"Max error : {max_error}")
             listBox.pack(pady=20, padx=50)
-
 
 
         frame.pack()
