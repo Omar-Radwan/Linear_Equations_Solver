@@ -7,7 +7,7 @@ from matrix_solver import MatrixSolver
 class GaussSeidel(MatrixSolver):
     def __init__(self, matrix: [], result: [], initials, iterations=50):
         super().__init__(matrix, result)
-        print("inin",initials)
+        print("inin", initials)
         self.iterations_list = []
         self.prev_solution = []
         if len(initials) == 0:
