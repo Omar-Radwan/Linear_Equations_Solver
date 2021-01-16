@@ -23,7 +23,6 @@ class Controller:
             iterations_list = method_object[0].iterations_list
             method_list=["Guass Seidel","Guass Elimination", "Guass Jordan",  "LU decomposition"]
 
-
         self.display_output(roots, "100", total_time, index_dictionary, iterations_list,method_list)
 
     def get_input(self):
