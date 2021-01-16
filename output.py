@@ -18,6 +18,7 @@ class Output():
 
     def begin(self, total_time: [], approximate_roots_lists: [], index_dictionary: [],iterations_list:[],method_list:[], precision):
         root = tk.Tk()
+        # is_error = [1 0 ]
 
         canvas = tk.Canvas(root)
         scroll_y = tk.Scrollbar(root, orient="vertical", command=canvas.yview)

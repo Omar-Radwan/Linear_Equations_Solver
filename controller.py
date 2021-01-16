@@ -55,7 +55,9 @@ class Controller:
         for i in range(len(method_object)):
             t1 = time.time()
             # try:
+
             roots.append(method_object[i].solve())
+
             # except:
             print("Enter a valid method.")
             total_time.append(time.time() - t1)
