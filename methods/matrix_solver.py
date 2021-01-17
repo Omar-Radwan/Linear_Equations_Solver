@@ -30,7 +30,6 @@ class MatrixSolver():
 
     def build_lower_zeros(self):
         """
-            function that builds lower zeroes
             ***     ***
             *** ->  0**
             ***     00*
@@ -45,8 +44,7 @@ class MatrixSolver():
 
     def build_lower_zeros_with_pivoting(self):
         """
-            function that builds lower zeroes and applies pivoting
-
+            builds lower zeroes and applies pivoting
             ***     ***
             *** ->  0**
             ***     00*
@@ -57,11 +55,17 @@ class MatrixSolver():
             self.__obtain_zero(row, 0, 0)
 
         for col in range(1, self.SIZE - 1):
-            self.__apply_pivoting(col , self.SIZE - 1, col)
+            self.__apply_pivoting(col, self.SIZE - 1, col)
             for row in range(self.SIZE - 1, col, -1):
                 self.__obtain_zero(row, col, row - 1)
 
     def build_upper_zeros(self):
+        """
+            ***     *00
+            *** ->  **0
+            ***     ***
+            Complexity O(n^3)
+        """
         for row in range(0, self.SIZE - 1):
             self.__obtain_zero(row, self.SIZE - 1, self.SIZE - 1)
 
@@ -70,6 +74,10 @@ class MatrixSolver():
                 self.__obtain_zero(row, col, row + 1)
 
     def back_substitution(self):
+        """
+            calculates the value of each variable starting from the last row till the first row
+            Complexity O(n^2)
+        """
         for col in range(self.SIZE - 1, -1, -1):
             self.check_solvability(self.matrix[col][col], self.result[col])
             self.result[col] = self.divide(self.result[col], self.matrix[col][col])
@@ -78,6 +86,10 @@ class MatrixSolver():
         return self.result
 
     def forward_substitution(self):
+        """
+            calculates the value of each variable starting from the first row till the last row
+            Complexity O(n^2)
+        """
         for col in range(0, self.SIZE):
             self.check_solvability(self.matrix[col][col], self.result[col])
             self.result[col] = self.divide(self.result[col], self.matrix[col][col])
@@ -86,30 +98,46 @@ class MatrixSolver():
         return self.result
 
     def build_augmented_matrix(self):
+        """
+           connects the coefficients matrix and the results matrix in one matrix (augmented matrix)
+        """
         for row in range(self.SIZE):
             self.matrix[row].append(self.result[row])
 
     def separate_augmented_matrix(self):
+        """
+           separates the coefficients and results matrix from the augmented matrix
+        """
         for row in range(self.SIZE):
             self.result[row] = self.matrix[row][-1]
             self.matrix[row].pop()
 
     def obtain_ones_in_the_main_diagonal(self):
+        """
+            divides each row from result by the coefficient of main diagonal element in that row
+        """
         for row in range(self.SIZE):
             self.check_solvability(self.matrix[row][row], self.matrix[row][-1])
             self.matrix[row][-1] = self.divide(self.matrix[row][-1], self.matrix[row][row])
             self.matrix[row][row] = self.divide(self.matrix[row][row], self.matrix[row][row])
 
     def divide(self, numerator, denominator):
+        """
+            applies numerator/denominator if denominator is not 0
+        """
         if denominator == 0:
             if not self.has_error:
                 self.has_error = True
-                self.error = DIVISION_BY_ZERO
+                self.error += DIVISION_BY_ZERO
             return 1
         else:
             return numerator / denominator
 
     def check_diagonal_dominant(self):
+        """
+            checks if matrix is not diagonal dominant
+        """
+
         for i in range(self.SIZE):
             row_sum = 0
             for j in range(self.SIZE):
@@ -117,10 +145,13 @@ class MatrixSolver():
                     row_sum += abs(self.matrix[i][j])
             if abs(self.matrix[i][i]) < row_sum:
                 if not self.has_error:
-                    self.has_error = True
-                    self.error = NOT_DIAGONALLY_DOMINANT
+                    self.error += NOT_DIAGONALLY_DOMINANT+', '
+                    return
 
     def check_pivot_row(self, row):
+        """
+            checks if the pivot row is all zeros in this case number of solutions infinite
+        """
         all_zeros = True
         for i in range(self.SIZE):
             if self.matrix[row][i] != 0:
@@ -131,18 +162,24 @@ class MatrixSolver():
             self.check_solvability(0, self.matrix[row][-1])
 
     def check_solvability(self, coefficient, result):
+        """
+             checks if there is infinite number of solutions or that there's no solution
+        """
         if coefficient == 0:
             if result == 0:
                 if not self.has_error:
                     self.has_error = True
-                    self.error = INFINITE_SOLUTIONS
+                    self.error += INFINITE_SOLUTIONS
 
             else:
                 if not self.has_error:
                     self.has_error = True
-                    self.error = NO_SOLUTION
+                    self.error += NO_SOLUTION
 
     def __obtain_zero(self, row: int, col: int, pivot_row: int):
+        """
+            takes row and col of element and obtains zero in position matrix[row][col] using pivot row provided
+        """
         if self.matrix[row][col] == 0:
             return
         self.check_pivot_row(pivot_row)
@@ -151,6 +188,9 @@ class MatrixSolver():
             self.matrix[row][cur_col] += ratio * self.matrix[pivot_row][cur_col]
 
     def __apply_pivoting(self, from_row, to_row, column):
+        """
+            functions that sorts rows of matrix in range(from_row, to_row) according to absolute value of column in descending order
+        """
         sorted_indices = []
         old_matrix = copy.deepcopy(self.matrix)
         for row in range(from_row, to_row + 1):
