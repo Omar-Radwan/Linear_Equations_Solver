@@ -1,8 +1,8 @@
 import copy
 
-from methods.matrix_solver import MatrixSolver, print_matrix, multiply
+from methods.matrix_solver import MatrixSolver, print_matrix, multiply, compare_matrices
 
-
+from constants import *
 class LuDecomposition(MatrixSolver):
     def __init__(self, matrix: [], result: [], iterations=50):
         super().__init__(matrix, result)
@@ -12,6 +12,7 @@ class LuDecomposition(MatrixSolver):
     def __obtain_zero_and_build_l(self, row: int, col: int, pivot_row: int):
         if self.matrix[row][col] == 0:
             return True
+        self.check_pivot_row(pivot_row)
         ratio = self.divide(-self.matrix[row][col], self.matrix[pivot_row][col])
         self.l[row][col] = -ratio
         for cur_col in range(len(self.matrix[row])):
@@ -24,12 +25,6 @@ class LuDecomposition(MatrixSolver):
             for row in range(self.SIZE - 1, col, -1):
                 self.__obtain_zero_and_build_l(row, col, row - 1)
 
-    def propagate_errors(self, matrix_solver):
-        self.division_by_zero = matrix_solver.division_by_zero
-        self.infinite_solutions = matrix_solver.infinite_solutions
-        self.no_solution = matrix_solver.no_solution
-        self.not_diagonal_dominant = matrix_solver.not_diagonal_dominant
-
     def solve(self):
         self.build_lower_zeros_and_build_l()
         l_solver = MatrixSolver(self.l, self.result)
@@ -39,11 +34,15 @@ class LuDecomposition(MatrixSolver):
         u_solver.build_lower_zeros()
         self.result = u_solver.back_substitution()
 
-        if l_solver.has_error:
+        if not compare_matrices(multiply(l_solver.matrix, u_solver.matrix),self.old_matrix):
+            self.has_error = True
+            self.error = NOT_DECOMPOSABLE
+
+        if l_solver.has_error and not self.has_error:
             self.has_error = l_solver.has_error
             self.error = l_solver.error
 
-        elif u_solver.has_error:
+        elif u_solver.has_error and not self.has_error:
             self.has_error = u_solver.has_error
             self.error = u_solver.error
 

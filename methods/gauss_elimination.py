@@ -13,4 +13,5 @@ class GaussianElimination(MatrixSolver):
         self.build_lower_zeros()
         self.separate_augmented_matrix()
         self.back_substitution()
+
         return self.result

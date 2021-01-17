@@ -19,8 +19,23 @@ def print_matrix(mat_a: []):
         print(x)
 
 
+def double_cmp(a, b):
+    return abs(a - b) < EPS
+
+
+def compare_matrices(a, b):
+    for i in range(len(a)):
+        for j in range(len(a[i])):
+            if not double_cmp(a[i][j], b[i][j]):
+                return False
+    return True
+
+
 class MatrixSolver():
     def __init__(self, matrix: [], result: [], iterations=50):
+        self.old_matrix = copy.deepcopy(matrix)
+        self.old_result = copy.deepcopy(result)
+
         self.matrix = copy.deepcopy(matrix)
         self.result = copy.deepcopy(result)
         self.SIZE = len(self.matrix)
@@ -145,7 +160,7 @@ class MatrixSolver():
                     row_sum += abs(self.matrix[i][j])
             if abs(self.matrix[i][i]) < row_sum:
                 if not self.has_error:
-                    self.error += NOT_DIAGONALLY_DOMINANT+', '
+                    self.error += NOT_DIAGONALLY_DOMINANT + ', '
                     return
 
     def check_pivot_row(self, row):
@@ -195,10 +210,14 @@ class MatrixSolver():
         old_matrix = copy.deepcopy(self.matrix)
         for row in range(from_row, to_row + 1):
             heapq.heappush(sorted_indices, (-abs(self.matrix[row][column]), row))
-        print(sorted_indices)
         for row in range(from_row, to_row + 1):
             max_row_index = heapq.heappop(sorted_indices)[1]
             self.matrix[row] = old_matrix[max_row_index]
 
     def solve(self):
-        pass
+        for i in range(self.SIZE):
+            res = 0
+            for j in range(self.SIZE):
+                res += self.result[j] * self.old_matrix[i][j]
+            if not double_cmp(res, self.old_result[i]):
+                print(res, self.old_result[i])
