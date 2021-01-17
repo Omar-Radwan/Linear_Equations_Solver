@@ -1,8 +1,5 @@
 import re
 
-from gauss_elimination import GaussianElimination
-from matrix_solver import print_matrix
-
 TERM_PATTERN = r'([+-][\d]*[\.?[\d]*]*[*]?[a-zA-Z]?)'
 NUMBER_PATTERN = r'([-+]?\d+[\.?[\d]*]*)'
 VARIABLE_ONLY=1

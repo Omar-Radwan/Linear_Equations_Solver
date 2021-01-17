@@ -1,7 +1,6 @@
 from main import gui
 from input_parser import InputParser
 from factory import Factory
-from matrix_solver import MatrixSolver
 # from output import Output
 import time
 from read_from_file import ReadFromFile

@@ -1,6 +1,8 @@
 import copy
 import heapq
 
+from constants import *
+
 
 def multiply(mat_a: [], mat_b: []):
     p1, q1, p2, q2 = len(mat_a), len(mat_a[0]), len(mat_b), len(mat_b[0])
@@ -23,13 +25,13 @@ class MatrixSolver():
         self.result = copy.deepcopy(result)
         self.SIZE = len(self.matrix)
         self.iterations = iterations
-        self.division_by_zero = False
-        self.infinite_solutions = False
-        self.no_solution = False
+        self.has_error = False
+        self.error = ""
 
     def build_lower_zeros(self):
         for row in range(self.SIZE - 1, 0, -1):
             self.__obtain_zero(row, 0, 0)
+
         for col in range(1, self.SIZE - 1):
             for row in range(self.SIZE - 1, col, -1):
                 self.__obtain_zero(row, col, row - 1)
@@ -38,6 +40,7 @@ class MatrixSolver():
         self.__apply_pivoting(0, self.SIZE - 1, 0)
         for row in range(self.SIZE - 1, 0, -1):
             self.__obtain_zero(row, 0, 0)
+
         for col in range(1, self.SIZE - 1):
             self.__apply_pivoting(col + 1, self.SIZE - 1, col)
             for row in range(self.SIZE - 1, col, -1):
@@ -52,9 +55,6 @@ class MatrixSolver():
                 self.__obtain_zero(row, col, row + 1)
 
     def back_substitution(self):
-        """"
-        AX=B
-        """
         for col in range(self.SIZE - 1, -1, -1):
             self.check_solvability(self.matrix[col][col], self.result[col])
             self.result[col] = self.divide(self.result[col], self.matrix[col][col])
@@ -81,28 +81,56 @@ class MatrixSolver():
 
     def obtain_ones_in_the_main_diagonal(self):
         for row in range(self.SIZE):
-            divisor = self.matrix[row][row]
-            for col in range(len(self.matrix[row])):
-                self.matrix[row][col] = self.divide(self.matrix[row][col], divisor)
+            self.check_solvability(self.matrix[row][row], self.matrix[row][-1])
+            self.matrix[row][-1] = self.divide(self.matrix[row][-1], self.matrix[row][row])
+            self.matrix[row][row] = self.divide(self.matrix[row][row], self.matrix[row][row])
 
-    def divide(self, x, y):
-        if y == 0:
-            self.division_by_zero = True
+    def divide(self, numerator, denominator):
+        if denominator == 0:
+            if not self.has_error:
+                self.has_error = True
+                self.error = DIVISION_BY_ZERO
             return 1
         else:
-            return x / y
+            return numerator / denominator
 
-    def check_solvability(self, x, y):
-        if y == 0:
-            if x == 0:
-                self.infinite_solutions = True
+    def check_diagonal_dominant(self):
+        for i in range(self.SIZE):
+            row_sum = 0
+            for j in range(self.SIZE):
+                if i != j:
+                    row_sum += abs(self.matrix[i][j])
+            if abs(self.matrix[i][i]) < row_sum:
+                if not self.has_error:
+                    self.has_error = True
+                    self.error = NOT_DIAGONALLY_DOMINANT
+
+    def check_pivot_row(self, row):
+        all_zeros = True
+        for i in range(self.SIZE):
+            if self.matrix[row][i] != 0:
+                all_zeros = False
+                break
+
+        if all_zeros:
+            self.check_solvability(0, self.matrix[row][-1])
+
+    def check_solvability(self, coefficient, result):
+        if coefficient == 0:
+            if result == 0:
+                if not self.has_error:
+                    self.has_error = True
+                    self.error = INFINITE_SOLUTIONS
+
             else:
-                self.no_solution = True
+                if not self.has_error:
+                    self.has_error = True
+                    self.error = NO_SOLUTION
 
     def __obtain_zero(self, row: int, col: int, pivot_row: int):
         if self.matrix[row][col] == 0:
-            return True
-
+            return
+        self.check_pivot_row(pivot_row)
         ratio = self.divide(-self.matrix[row][col], self.matrix[pivot_row][col])
         for cur_col in range(len(self.matrix[row])):
             self.matrix[row][cur_col] += ratio * self.matrix[pivot_row][cur_col]
