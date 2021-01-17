@@ -57,7 +57,7 @@ class MatrixSolver():
             self.__obtain_zero(row, 0, 0)
 
         for col in range(1, self.SIZE - 1):
-            self.__apply_pivoting(col + 1, self.SIZE - 1, col)
+            self.__apply_pivoting(col , self.SIZE - 1, col)
             for row in range(self.SIZE - 1, col, -1):
                 self.__obtain_zero(row, col, row - 1)
 
@@ -154,8 +154,8 @@ class MatrixSolver():
         sorted_indices = []
         old_matrix = copy.deepcopy(self.matrix)
         for row in range(from_row, to_row + 1):
-            heapq.heappush(sorted_indices, (-self.matrix[row][column], row))
-
+            heapq.heappush(sorted_indices, (-abs(self.matrix[row][column]), row))
+        print(sorted_indices)
         for row in range(from_row, to_row + 1):
             max_row_index = heapq.heappop(sorted_indices)[1]
             self.matrix[row] = old_matrix[max_row_index]

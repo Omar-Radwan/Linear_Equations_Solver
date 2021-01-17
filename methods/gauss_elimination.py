@@ -9,7 +9,6 @@ class GaussianElimination(MatrixSolver):
         pass
 
     def solve(self):
-
         self.build_augmented_matrix()
         self.build_lower_zeros()
         self.separate_augmented_matrix()

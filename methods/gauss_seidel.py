@@ -5,7 +5,7 @@ from methods.matrix_solver import MatrixSolver
 
 
 class GaussSeidel(MatrixSolver):
-    def __init__(self, matrix: [], result: [], initials, iterations=50):
+    def __init__(self, matrix: [], result: [], initials, iterations=50, precision=0.00001):
         super().__init__(matrix, result)
         self.iterations = iterations
         self.iterations_list = []
@@ -15,6 +15,7 @@ class GaussSeidel(MatrixSolver):
         else:
             self.solution = copy.deepcopy(initials)
         self.prev_solution = copy.deepcopy(self.solution)
+        self.precision = precision
 
     def do_iteration(self):
         for row in range(self.SIZE):
@@ -38,4 +39,6 @@ class GaussSeidel(MatrixSolver):
             self.do_iteration()
             self.iterations_list.append(self.calculate_error())
             self.prev_solution = copy.deepcopy(self.solution)
+            if self.iterations_list[-1].max_error < self.precision:
+                break
         return self.solution
