@@ -5,10 +5,21 @@ from methods.gauss_seidel import GaussSeidel
 from methods.lu_decomposition import LuDecomposition
 from methods.matrix_solver import MatrixSolver
 
-matrix = [[1, -1],
-          [5, -5]]
+# matrix = [[1, -1],
+#           [5, -5]]
+#
+# result = [-3, -15]
 
-result = [-3, -15]
+# matrix = [[1, 1, -1],
+#           [6, 2, 2],
+#           [-3, 4, 1]]
+# result = [-3, 2, 1]
+
+# matrix = [[2, 3, 1],
+#           [4, 1, 4],
+#           [3, 4, 6]]
+# result = [-4, 9, 0]
+
 
 # matrix = [[12, 3, -5],
 #           [1, 5, 3],
@@ -16,11 +27,11 @@ result = [-3, -15]
 # result = [1, 28, 76]
 
 
-# matrix = [[1, 1, 0, 1],
-#         [2, 1, -1, 1],
-#         [4, -1, -2, 2],
-#         [3, -1, -1, 2]]
-# result =   [2, 1, 0, 3]
+matrix = [[1, 1, 0, 1],
+          [2, 1, -1, 1],
+          [4, -1, -2, 2],
+          [3, -1, -1, 2]]
+result = [2, 1, 0, 3]
 
 gaussian_elimination = GaussianElimination(matrix, result)
 gauss_jordan = GaussJordan(matrix, result)
