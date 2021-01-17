@@ -7,7 +7,7 @@ from methods.matrix_solver import MatrixSolver
 class GaussSeidel(MatrixSolver):
     def __init__(self, matrix: [], result: [], initials, iterations=50):
         super().__init__(matrix, result)
-
+        self.iterations = iterations
         self.iterations_list = []
         self.prev_solution = []
         if len(initials) == 0:
@@ -34,7 +34,7 @@ class GaussSeidel(MatrixSolver):
 
     def solve(self):
         self.check_diagonal_dominant()
-        for iteration in range(self.iterations + 1):
+        for iteration in range(self.iterations):
             self.do_iteration()
             self.iterations_list.append(self.calculate_error())
             self.prev_solution = copy.deepcopy(self.solution)
