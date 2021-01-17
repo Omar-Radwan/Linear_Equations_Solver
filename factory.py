@@ -2,13 +2,16 @@ from gauss_elimination import GaussianElimination
 from gauss_seidel import GaussSeidel
 from gauss_jordan import GaussJordan
 from lu_decomposition import LuDecomposition
-
+from gauss_elimination_pivoting import GaussianEliminationPivoting
 class Factory():
 
     def method_type(self,matrix,result,method,seidel_initials):
 
         if method=="Guass Elimination":
             return [GaussianElimination(matrix,result)]
+
+        elif method=="Guass Elimination-pivoting":
+            return [GaussianEliminationPivoting(matrix,result)]
 
         elif method=="Guass Jordan":
             return [GaussJordan(matrix,result)]
@@ -21,6 +24,6 @@ class Factory():
 
         elif method=="All":
             return [GaussSeidel(matrix,result,seidel_initials),GaussianElimination(matrix,result),GaussJordan(matrix,result),
-                    LuDecomposition(matrix,result)]
+                    LuDecomposition(matrix,result),GaussianEliminationPivoting(matrix,result)]
 
 

@@ -21,5 +21,7 @@ class ReadFromFile():
         return equation_list
 
     def get_seidel_initial(self):
-        seidel_initial=self.lines[self.seidel_initial_index]
+        seidel_initial=self.lines[self.seidel_initial_index].split(" ")
+        seidel_initial = [float(i) for i in seidel_initial]
+
         return seidel_initial

@@ -16,6 +16,8 @@ class Output():
         self.points=[]
         self.iterations=[i+1 for i in range(50)]
 
+    # errors=[[(0.1,"div by zero"),(0.2,"inf")],[],[(0.3,"diagonally")]]
+
     def begin(self, total_time: [], approximate_roots_lists: [], index_dictionary: [],iterations_list:[],method_list:[],errors:[], precision):
         root = tk.Tk()
         canvas = tk.Canvas(root)
@@ -40,7 +42,10 @@ class Output():
         print(method_name)
         self.make_label_pack_vertical(root, tk, f"Method used : {method_name} ", 10)
         if error!=0:
-            self.make_label_pack_vertical(root, tk, f"Error: {error} ms", 10)
+            first_error=min(error)
+            self.make_label_pack_vertical(root, tk, f"Error: {first_error[1]} ", 10)
+            self.make_label_pack_vertical(root, tk, "-----------------------------------------", 10)
+
         else:
             self.make_label_pack_vertical(root, tk, f"Execution time : {time} ms", 10)
             self.make_label_pack_vertical(root, tk, f"Precision : {precision} %", 10)

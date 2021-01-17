@@ -16,6 +16,7 @@ class Controller:
     def begin(self):
         iterations_list = []
         equation_list, method_string, seidel_initials = self.get_input()
+        print(seidel_initials)
         method_list=[method_string]
         index_dictionary, matrix, results = self.parse_input(equation_list)
         method_object = self.method_type(matrix, results, method_string, seidel_initials)
@@ -24,7 +25,7 @@ class Controller:
             iterations_list = method_object[0].iterations_list
         elif method_string=="All":
             iterations_list = method_object[0].iterations_list
-            method_list=["Guass Seidel","Guass Elimination", "Guass Jordan",  "LU decomposition"]
+            method_list=["Guass Seidel","Guass Elimination", "Guass Jordan",  "LU decomposition","Guass Elimination-pivoting"]
 
         self.display_output(roots, "100", total_time, index_dictionary, iterations_list,method_list,errors)
 
@@ -35,6 +36,9 @@ class Controller:
             read_from_file = ReadFromFile()
             equation_list = read_from_file.get_equation_list()
             method = read_from_file.get_method()
+            sidel_initials=""
+            if method=="All" or method=="Guass Seidel":
+                sidel_initials=read_from_file.get_seidel_initial()
 
         else:
             equation_list = gui_object.equationsList
@@ -51,26 +55,20 @@ class Controller:
         factory = Factory()
         method = factory.method_type(matrix, results, method_string, seidel_initials)
         return method
-
+#errors=[[(0.1,"div by zero"),(0.2,"inf")],[],[(0.3,"diagonally")]]
     def solve(self, method_object):
         roots = []
         total_time = []
         errors=[0 for i in range(len(method_object))]
         for i in range(len(method_object)):
             t1 = time.time()
-            if method_object[i].division_by_zero:
-                errors[i]=DIVISION_BY_ZERO
-            elif method_object[i].infinite_solutions:
-                errors[i]=INFINITE_SOLUTIONS
-            elif method_object[i].no_solution:
-                errors[i]=NO_SOLUTION
-            #elif method_object[i].diagonally_dominant
+            if i==0:
+                errors[i]=[(0.1,"div by zero"),(0.2,"inf")]
 
             roots.append(method_object[i].solve())
 
 
             total_time.append(time.time() - t1)
-
         return roots, total_time,errors
 
 

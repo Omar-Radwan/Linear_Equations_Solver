@@ -15,6 +15,7 @@ class gui():
     method = tk.StringVar(root)
     OptionList = [
         "Guass Elimination",
+        "Guass Elimination-pivoting",
         "Guass Jordan",
         "Guass Seidel",
         "LU decomposition",
