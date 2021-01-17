@@ -37,7 +37,7 @@ class Output():
     def render(self,root, time, approximate_roots, precision, index_dictionary, method_name,error,iterations_list):
         print(method_name)
         self.make_label_pack_vertical(root, tk, f"Method used : {method_name} ", 10)
-        if error!=0:
+        if error!="":
             self.make_label_pack_vertical(root, tk, f"Error: {error} ", 10)
             self.make_label_pack_vertical(root, tk, "-----------------------------------------", 10)
 

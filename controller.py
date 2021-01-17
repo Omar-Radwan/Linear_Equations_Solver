@@ -61,10 +61,9 @@ class Controller:
         errors=[0 for i in range(len(method_object))]
         for i in range(len(method_object)):
             t1 = time.time()
-            #if i==0:
-             #   errors[i]=["div by zero"]
 
             roots.append(method_object[i].solve())
+            errors[i]=method_object[i].error
 
 
             total_time.append(time.time() - t1)
