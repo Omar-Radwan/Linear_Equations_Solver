@@ -55,15 +55,15 @@ class Controller:
         factory = Factory()
         method = factory.method_type(matrix, results, method_string, seidel_initials)
         return method
-#errors=[[(0.1,"div by zero"),(0.2,"inf")],[],[(0.3,"diagonally")]]
+
     def solve(self, method_object):
         roots = []
         total_time = []
         errors=[0 for i in range(len(method_object))]
         for i in range(len(method_object)):
             t1 = time.time()
-            if i==0:
-                errors[i]=[(0.1,"div by zero"),(0.2,"inf")]
+            #if i==0:
+             #   errors[i]=["div by zero"]
 
             roots.append(method_object[i].solve())
 
