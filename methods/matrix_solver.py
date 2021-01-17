@@ -29,6 +29,10 @@ class MatrixSolver():
         self.error = ""
 
     def build_lower_zeros(self):
+        """
+            function that
+        :return:
+        """
         for row in range(self.SIZE - 1, 0, -1):
             self.__obtain_zero(row, 0, 0)
 

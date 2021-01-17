@@ -14,6 +14,7 @@ class GaussSeidel(MatrixSolver):
             self.solution = [0 for i in range(self.SIZE)]
         else:
             self.solution = copy.deepcopy(initials)
+        self.prev_solution = copy.deepcopy(self.solution)
 
     def do_iteration(self):
         for row in range(self.SIZE):
@@ -35,7 +36,6 @@ class GaussSeidel(MatrixSolver):
         self.check_diagonal_dominant()
         for iteration in range(self.iterations + 1):
             self.do_iteration()
-            if iteration > 0:
-                self.iterations_list.append(self.calculate_error())
+            self.iterations_list.append(self.calculate_error())
             self.prev_solution = copy.deepcopy(self.solution)
         return self.solution
