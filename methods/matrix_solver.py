@@ -30,8 +30,11 @@ class MatrixSolver():
 
     def build_lower_zeros(self):
         """
-            function that
-        :return:
+            function that builds lower zeroes
+            ***     ***
+            *** ->  0**
+            ***     00*
+            Complexity O(n^3)
         """
         for row in range(self.SIZE - 1, 0, -1):
             self.__obtain_zero(row, 0, 0)
@@ -41,6 +44,14 @@ class MatrixSolver():
                 self.__obtain_zero(row, col, row - 1)
 
     def build_lower_zeros_with_pivoting(self):
+        """
+            function that builds lower zeroes and applies pivoting
+
+            ***     ***
+            *** ->  0**
+            ***     00*
+            Complexity O(n^3)
+        """
         self.__apply_pivoting(0, self.SIZE - 1, 0)
         for row in range(self.SIZE - 1, 0, -1):
             self.__obtain_zero(row, 0, 0)

@@ -11,11 +11,14 @@ from methods.matrix_solver import MatrixSolver
 # result = [-3, -15]
 
 
-matrix = [[3, -1, 1],
-          [3, 6, 2],
-          [3, 3, 7]]
-result = [1, 0, 4]
-
+# matrix = [[3, -1, 1],
+#           [3, 6, 2],
+#           [3, 3, 7]]
+# result = [1, 0, 4]
+matrix = [[1,-1,2],
+          [0,0,-1],
+          [0,2,-1]]
+result = [8,-11,-3]
 # matrix = [[1, 1, -1],
 #           [6, 2, 2],
 #           [-3, 4, 1]]
@@ -43,7 +46,7 @@ gaussian_elimination = GaussianElimination(matrix, result)
 gauss_jordan = GaussJordan(matrix, result)
 lu_decomposition = LuDecomposition(matrix, result)
 gauss_elimination_pivoting = GaussianEliminationPivoting(matrix, result)
-gauss_seidel = GaussSeidel(matrix, result, [])
+gauss_seidel = GaussSeidel(matrix, result, [], 1)
 
 print(f'Gauss Elim: {gaussian_elimination.solve()}')
 print(
@@ -68,4 +71,5 @@ print()
 print(f'Gauss Seidel: {gauss_seidel.solve()}')
 print(
     f'Gauss Seidal Flags: {gauss_seidel.error}')
+
 print()
