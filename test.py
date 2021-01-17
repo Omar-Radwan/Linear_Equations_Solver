@@ -10,6 +10,12 @@ from methods.matrix_solver import MatrixSolver
 #
 # result = [-3, -15]
 
+
+matrix = [[3, -1, 1],
+          [3, 6, 2],
+          [3, 3, 7]]
+result = [1, 0, 4]
+
 # matrix = [[1, 1, -1],
 #           [6, 2, 2],
 #           [-3, 4, 1]]
@@ -26,12 +32,12 @@ from methods.matrix_solver import MatrixSolver
 #           [3, 7, 13]]
 # result = [1, 28, 76]
 
-
-matrix = [[1, 1, 0, 1],
-          [2, 1, -1, 1],
-          [4, -1, -2, 2],
-          [3, -1, -1, 2]]
-result = [2, 1, 0, 3]
+#
+# matrix = [[1, 1, 0, 1],
+#           [2, 1, -1, 1],
+#           [4, -1, -2, 2],
+#           [3, -1, -1, 2]]
+# result = [2, 1, 0, 3]
 
 gaussian_elimination = GaussianElimination(matrix, result)
 gauss_jordan = GaussJordan(matrix, result)
