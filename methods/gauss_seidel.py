@@ -1,7 +1,7 @@
 import copy
 
 from gauss_seidel_iteration import GaussSeidelIteration
-from matrix_solver import MatrixSolver
+from methods.matrix_solver import MatrixSolver
 
 
 class GaussSeidel(MatrixSolver):
@@ -21,6 +21,7 @@ class GaussSeidel(MatrixSolver):
             for col in range(self.SIZE):
                 if row != col:
                     cur_solution -= (self.solution[col] * self.matrix[row][col])
+            self.check_solvability(self.matrix[row][row], cur_solution)
             cur_solution = self.divide(cur_solution, self.matrix[row][row])
             self.solution[row] = cur_solution
 
@@ -31,6 +32,7 @@ class GaussSeidel(MatrixSolver):
         return GaussSeidelIteration(self.solution, error)
 
     def solve(self):
+        self.check_diagonal_dominant()
         for iteration in range(self.iterations + 1):
             self.do_iteration()
             if iteration > 0:

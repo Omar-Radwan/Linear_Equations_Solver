@@ -6,10 +6,7 @@ from area import ScrollableFrame
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-NO_SOLUTION="No solution exists!"
-INFINITE_SOLUTIONS="Infinite solutions!"
-DIVISION_BY_ZERO="Division by zero!"
-NOT_DIAGONALLY_DOMINANT="Can't be solved using Gauss seidel .. not diagonally dominant!"
+
 class Output():
     def __init__(self):
         self.value_list=[]

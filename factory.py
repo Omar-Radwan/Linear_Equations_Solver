@@ -1,7 +1,7 @@
-from gauss_elimination import GaussianElimination
-from gauss_seidel import GaussSeidel
-from gauss_jordan import GaussJordan
-from lu_decomposition import LuDecomposition
+from methods.gauss_elimination import GaussianElimination
+from methods.gauss_seidel import GaussSeidel
+from methods.gauss_jordan import GaussJordan
+from methods.lu_decomposition import LuDecomposition
 from gauss_elimination_pivoting import GaussianEliminationPivoting
 class Factory():
 
