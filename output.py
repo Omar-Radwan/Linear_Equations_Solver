@@ -16,16 +16,14 @@ class Output():
         self.points=[]
         self.iterations=[i+1 for i in range(50)]
 
-    def begin(self, total_time: [], approximate_roots_lists: [], index_dictionary: [],iterations_list:[],method_list:[], precision):
+    def begin(self, total_time: [], approximate_roots_lists: [], index_dictionary: [],iterations_list:[],method_list:[],errors:[], precision):
         root = tk.Tk()
-        # is_error = [1 0 ]
-
         canvas = tk.Canvas(root)
         scroll_y = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
 
         frame = tk.Frame(canvas)
         for i in range(len(approximate_roots_lists)):
-            self.render(frame,total_time[i], approximate_roots_lists[i], precision, index_dictionary, method_list[i],iterations_list)
+            self.render(frame,total_time[i], approximate_roots_lists[i], precision, index_dictionary, method_list[i],errors[i],iterations_list)
 
         canvas.create_window(0, 0, anchor='nw', window=frame)
         canvas.update_idletasks()
@@ -38,25 +36,29 @@ class Output():
         root.geometry("500x650")
         root.mainloop()
 
-    def render(self,root, time, approximate_roots, precision, index_dictionary, method_name,iterations_list):
+    def render(self,root, time, approximate_roots, precision, index_dictionary, method_name,error,iterations_list):
         print(method_name)
         self.make_label_pack_vertical(root, tk, f"Method used : {method_name} ", 10)
+        if error!=0:
+            self.make_label_pack_vertical(root, tk, f"Error: {error} ms", 10)
+        else:
+            self.make_label_pack_vertical(root, tk, f"Execution time : {time} ms", 10)
+            self.make_label_pack_vertical(root, tk, f"Precision : {precision} %", 10)
+            self.make_label_pack_vertical(root, tk, "Approximate roots are :", 10)
+            self.make_table(root, approximate_roots, index_dictionary)
+            if method_name == "Guass Seidel" or method_name == "All":
+                self.make_label_pack_vertical(root, tk, "-----------------------------------------", 10)
+                self.iterations_table(root, iterations_list, index_dictionary)
+                self.set_points()
+                keys_list = list(index_dictionary)
+                for i in range(len(self.points)):
+                    point = self.points[i]
+                    variable = keys_list[i]
+                    print(variable)
+                    self.graph(root, point, variable)
+            self.make_label_pack_vertical(root, tk, "-----------------------------------------", 10)
 
-        self.make_label_pack_vertical(root,tk,f"Execution time : {time} ms",10)
-        self.make_label_pack_vertical(root,tk,f"Precision : {precision} %",10)
-        self.make_label_pack_vertical(root,tk,"Approximate roots are :",10)
-        self.make_table(root,approximate_roots,index_dictionary)
-        if method_name=="Guass Seidel" or method_name=="All":
-            self.make_label_pack_vertical(root,tk,"-----------------------------------------",10)
-            self.iterations_table(root,iterations_list,index_dictionary)
-            self.set_points()
-            keys_list = list(index_dictionary)
-            for i in range(len(self.points)):
-                point=self.points[i]
-                variable=keys_list[i]
-                print(variable)
-                self.graph(root,point,variable)
-        self.make_label_pack_vertical(root,tk,"-----------------------------------------",10)
+
 
 
     def make_table(self, root, approximate_roots, index_dictionary):

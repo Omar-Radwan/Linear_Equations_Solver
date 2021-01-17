@@ -7,7 +7,10 @@ import time
 from read_from_file import ReadFromFile
 from output import Output
 
-
+NO_SOLUTION="No solution exists!"
+INFINITE_SOLUTIONS="Infinite solutions!"
+DIVISION_BY_ZERO="Division by zero!"
+NOT_DIAGONALLY_DOMINANT="Can't be solved using Gauss seidel .. not diagonally dominant!"
 class Controller:
 
     def begin(self):
@@ -16,14 +19,14 @@ class Controller:
         method_list=[method_string]
         index_dictionary, matrix, results = self.parse_input(equation_list)
         method_object = self.method_type(matrix, results, method_string, seidel_initials)
-        roots, total_time = self.solve(method_object)
+        roots, total_time,errors = self.solve(method_object)
         if method_string == "Guass Seidel" :
             iterations_list = method_object[0].iterations_list
         elif method_string=="All":
             iterations_list = method_object[0].iterations_list
             method_list=["Guass Seidel","Guass Elimination", "Guass Jordan",  "LU decomposition"]
 
-        self.display_output(roots, "100", total_time, index_dictionary, iterations_list,method_list)
+        self.display_output(roots, "100", total_time, index_dictionary, iterations_list,method_list,errors)
 
     def get_input(self):
         gui_object = gui()
@@ -52,19 +55,25 @@ class Controller:
     def solve(self, method_object):
         roots = []
         total_time = []
+        errors=[0 for i in range(len(method_object))]
         for i in range(len(method_object)):
             t1 = time.time()
-            # try:
+            if method_object[i].division_by_zero:
+                errors[i]=DIVISION_BY_ZERO
+            elif method_object[i].infinite_solutions:
+                errors[i]=INFINITE_SOLUTIONS
+            elif method_object[i].no_solution:
+                errors[i]=NO_SOLUTION
+            #elif method_object[i].diagonally_dominant
 
             roots.append(method_object[i].solve())
 
-            # except:
-            print("Enter a valid method.")
+
             total_time.append(time.time() - t1)
 
-        return roots, total_time
+        return roots, total_time,errors
 
 
-    def display_output(self, roots, precision, total_time, index_dictionary, iterations_list,method_list):
+    def display_output(self, roots, precision, total_time, index_dictionary, iterations_list,method_list,errors):
         output = Output()
-        output.begin(total_time, roots, index_dictionary, iterations_list,method_list, precision)
+        output.begin(total_time, roots, index_dictionary, iterations_list,method_list,errors, precision)

@@ -103,14 +103,13 @@ class InputParser:
         if not variable in dictionary_index.keys():
             dictionary_index[variable] = i
             i += 1
-        return dictionary_index,i
+        return dictionary_index, i
 
 
-"""input_parser = InputParser()
-list_of_equations = ["25*a+5*b+c-106.8", "64*a+8*b+c-177.2", "144*a+12*b+c-279.2","4*a+12*b+c+f-279.2",
-                     "4*a+12*b+c+f+z-279.2"]
+input_parser = InputParser()
+list_of_equations = ["25*x1+5*x2+x3-106.8", "64*x1+8*x2+x3-177.2", "144*x1+12*x2+x3-279.2"]
 input_parser.get_inputs(list_of_equations)
-input_parser.prepare_equations(list_of_equations)
+"""input_parser.prepare_equations(list_of_equations)
 matrix, results = input_parser.get_coefficient_matrix(list_of_equations)
 gaussian_elemination = GaussianElimination(matrix, results)
 print(gaussian_elemination.solve())

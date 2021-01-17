@@ -10,6 +10,6 @@ class GaussJordan(MatrixSolver):
         self.build_augmented_matrix()
         self.build_upper_zeros()
         self.build_lower_zeros()
-        self.obtain_main_diagonal_ones()
+        self.obtain_ones_in_the_main_diagonal()
         self.separate_augmented_matrix()
         return self.result
