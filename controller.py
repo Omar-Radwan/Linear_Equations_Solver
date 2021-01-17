@@ -6,19 +6,16 @@ import time
 from read_from_file import ReadFromFile
 from output import Output
 
-NO_SOLUTION="No solution exists!"
-INFINITE_SOLUTIONS="Infinite solutions!"
-DIVISION_BY_ZERO="Division by zero!"
-NOT_DIAGONALLY_DOMINANT="Can't be solved using Gauss seidel .. not diagonally dominant!"
 class Controller:
 
     def begin(self):
         iterations_list = []
-        equation_list, method_string, seidel_initials = self.get_input()
-        print(seidel_initials)
+        equation_list, method_string, seidel_initials,iterations,precision = self.get_input()
+        print(iterations)
+        print(precision)
         method_list=[method_string]
         index_dictionary, matrix, results = self.parse_input(equation_list)
-        method_object = self.method_type(matrix, results, method_string, seidel_initials)
+        method_object = self.method_type(matrix, results, method_string, seidel_initials,iterations,precision)
         roots, total_time,errors = self.solve(method_object)
         if method_string == "Guass Seidel" :
             iterations_list = method_object[0].iterations_list
@@ -31,6 +28,8 @@ class Controller:
     def get_input(self):
         gui_object = gui()
         gui_object.begin()
+        iterations=50
+        precision=0.00001
         if gui_object.read_from_file:
             read_from_file = ReadFromFile()
             equation_list = read_from_file.get_equation_list()
@@ -43,16 +42,18 @@ class Controller:
             equation_list = gui_object.equationsList
             method = gui_object.method.get()
             sidel_initials = gui_object.initials
-        return equation_list, method, sidel_initials
+            iterations=gui_object.maximumIterations.get()
+            precision=gui_object.precision.get()
+        return equation_list, method, sidel_initials,iterations,precision
 
     def parse_input(self, equation_list):
         input_parser = InputParser()
         index_dictionary, matrix, results = input_parser.get_inputs(equation_list)
         return index_dictionary, matrix, results
 
-    def method_type(self, matrix, results, method_string, seidel_initials):
+    def method_type(self, matrix, results, method_string, seidel_initials,iterations,precision):
         factory = Factory()
-        method = factory.method_type(matrix, results, method_string, seidel_initials)
+        method = factory.method_type(matrix, results, method_string, seidel_initials,iterations,precision)
         return method
 
     def solve(self, method_object):
