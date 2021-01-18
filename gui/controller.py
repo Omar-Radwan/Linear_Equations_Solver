@@ -2,7 +2,6 @@ from misc.excel_writer import ExcelWriter
 from gui.gui import gui
 from misc.input_parser import InputParser
 from misc.factory import Factory
-# from output import Output
 import time
 from misc.read_from_file import ReadFromFile
 from gui.output import Output
