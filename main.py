@@ -11,6 +11,8 @@ root = tk.Tk()
 class gui():
     maximumIterations = tk.IntVar()
     precision = tk.DoubleVar()
+    precision.set(0.00001)
+    maximumIterations.set(50)
     numberOfEquations = tk.StringVar(root)
     method = tk.StringVar(root)
     OptionList = [

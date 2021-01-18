@@ -14,14 +14,14 @@ class Output():
         self.iterations=[i+1 for i in range(50)]
 
 
-    def begin(self, total_time: [], approximate_roots_lists: [], index_dictionary: [],iterations_list:[],method_list:[],errors:[], precision):
+    def begin(self, total_time: [], approximate_roots_lists: [], index_dictionary: [],iterations_list:[],method_list:[],errors:[]):
         root = tk.Tk()
         canvas = tk.Canvas(root)
         scroll_y = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
 
         frame = tk.Frame(canvas)
         for i in range(len(approximate_roots_lists)):
-            self.render(frame,total_time[i], approximate_roots_lists[i], precision, index_dictionary, method_list[i],errors[i],iterations_list)
+            self.render(frame,total_time[i], approximate_roots_lists[i], index_dictionary, method_list[i],errors[i],iterations_list)
 
         canvas.create_window(0, 0, anchor='nw', window=frame)
         canvas.update_idletasks()
@@ -34,8 +34,8 @@ class Output():
         root.geometry("500x650")
         root.mainloop()
 
-    def render(self,root, time, approximate_roots, precision, index_dictionary, method_name,error,iterations_list):
-        print(method_name)
+    def render(self,root, time, approximate_roots, index_dictionary, method_name,error,iterations_list):
+        print("iterations list size",len(iterations_list))
         self.make_label_pack_vertical(root, tk, f"Method used : {method_name} ", 10)
         if error!="":
             self.make_label_pack_vertical(root, tk, f"Error: {error} ", 10)
@@ -43,10 +43,11 @@ class Output():
 
         else:
             self.make_label_pack_vertical(root, tk, f"Execution time : {time} ms", 10)
-            self.make_label_pack_vertical(root, tk, f"Precision : {precision} %", 10)
             self.make_label_pack_vertical(root, tk, "Approximate roots are :", 10)
             self.make_table(root, approximate_roots, index_dictionary)
             if method_name == "Guass Seidel" or method_name == "All":
+                self.make_label_pack_vertical(root, tk, f"Precision : {iterations_list[-1].max_error*100} %", 10)
+
                 self.make_label_pack_vertical(root, tk, "-----------------------------------------", 10)
                 self.iterations_table(root, iterations_list, index_dictionary)
                 self.set_points()
@@ -56,6 +57,7 @@ class Output():
                     variable = keys_list[i]
                     print(variable)
                     self.graph(root, point, variable)
+
             self.make_label_pack_vertical(root, tk, "-----------------------------------------", 10)
 
 
@@ -114,7 +116,7 @@ class Output():
         line2 = FigureCanvasTkAgg(figure2, root)
         line2.get_tk_widget().pack(fill=tk.BOTH,pady=20)
         df2 = df2[['iterations', variable]].groupby('iterations').sum()
-        df2.plot(kind='line', legend=True, ax=ax2, color='r', marker='o', fontsize=10)
+        df2.plot(kind='line', legend=True, ax=ax2, color='b', marker='o', fontsize=10)
         ax2.set_title('variable Vs. iterations')
 
 
