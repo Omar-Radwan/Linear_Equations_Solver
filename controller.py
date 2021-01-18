@@ -23,7 +23,7 @@ class Controller:
             iterations_list = method_object[0].iterations_list
             method_list=["Guass Seidel","Guass Elimination", "Guass Jordan",  "LU decomposition","Guass Elimination-pivoting"]
 
-        self.display_output(roots, total_time, index_dictionary, iterations_list,method_list,errors)
+        self.display_output(roots, total_time, index_dictionary, iterations_list,method_list,errors,iterations)
 
     def get_input(self):
         gui_object = gui()
@@ -71,6 +71,6 @@ class Controller:
         return roots, total_time,errors
 
 
-    def display_output(self, roots,  total_time, index_dictionary, iterations_list,method_list,errors):
-        output = Output()
+    def display_output(self, roots,  total_time, index_dictionary, iterations_list,method_list,errors,iterations):
+        output = Output(iterations)
         output.begin(total_time, roots, index_dictionary, iterations_list,method_list,errors)

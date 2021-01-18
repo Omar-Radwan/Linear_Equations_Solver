@@ -8,10 +8,11 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 class Output():
-    def __init__(self):
+    def __init__(self,iterations_num):
         self.value_list=[]
         self.points=[]
-        self.iterations=[i+1 for i in range(50)]
+        self.iterations=[i+1 for i in range(iterations_num)]
+        self.iterations_num=iterations_num
 
 
     def begin(self, total_time: [], approximate_roots_lists: [], index_dictionary: [],iterations_list:[],method_list:[],errors:[]):
@@ -106,6 +107,7 @@ class Output():
 
     def graph(self,root,point,variable):
         print(self.iterations)
+        print(point)
         data2 = {'iterations': self.iterations
             , variable: point
                  }
@@ -122,7 +124,7 @@ class Output():
 
     def set_points(self):
         n = len(self.value_list[0])
-        self.points = [[0 for j in range(50)] for i in range(n)]
+        self.points = [[0 for j in range(self.iterations_num)] for i in range(n)]
         for i in range(len(self.points)):
             for j in range(len(self.value_list)):
                 self.points[i][j] = self.value_list[j][i]
