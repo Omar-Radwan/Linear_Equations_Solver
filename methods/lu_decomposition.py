@@ -3,6 +3,8 @@ import copy
 from methods.matrix_solver import MatrixSolver, print_matrix, multiply, compare_matrices
 
 from constants import *
+
+
 class LuDecomposition(MatrixSolver):
     def __init__(self, matrix: [], result: [], iterations=50):
         super().__init__(matrix, result)
@@ -34,7 +36,7 @@ class LuDecomposition(MatrixSolver):
         u_solver.build_lower_zeros()
         self.result = u_solver.back_substitution()
 
-        if not compare_matrices(multiply(l_solver.matrix, u_solver.matrix),self.old_matrix):
+        if not compare_matrices(multiply(l_solver.matrix, u_solver.matrix), self.old_matrix):
             self.has_error = True
             self.error = NOT_DECOMPOSABLE
 

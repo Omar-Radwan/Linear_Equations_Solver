@@ -20,7 +20,7 @@ def print_matrix(mat_a: []):
 
 
 def double_cmp(a, b):
-    return abs(a - b) < EPS
+    return abs(a - b) < 1
 
 
 def compare_matrices(a, b):
