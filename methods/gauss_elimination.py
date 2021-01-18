@@ -1,12 +1,11 @@
-import copy
-
+from misc.constants import GAUSS_ELIMINATION
 from methods.matrix_solver import MatrixSolver
 
 
 class GaussianElimination(MatrixSolver):
     def __init__(self, matrix: [], result: [], iterations=50):
         super().__init__(matrix, result)
-        pass
+        self.name = GAUSS_ELIMINATION
 
     def solve(self):
         self.build_augmented_matrix()

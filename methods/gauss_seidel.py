@@ -1,7 +1,7 @@
 import copy
 
-from gauss_seidel_iteration import GaussSeidelIteration
-from methods.matrix_solver import MatrixSolver
+from misc.gauss_seidel_iteration import GaussSeidelIteration
+from methods.matrix_solver import MatrixSolver, GAUSS_SEIDEL
 
 
 class GaussSeidel(MatrixSolver):
@@ -16,6 +16,7 @@ class GaussSeidel(MatrixSolver):
             self.solution = copy.deepcopy(initials)
         self.prev_solution = copy.deepcopy(self.solution)
         self.precision = precision
+        self.name = GAUSS_SEIDEL
 
     def do_iteration(self):
         for row in range(self.SIZE):

@@ -1,8 +1,8 @@
 import copy
 
-from methods.matrix_solver import MatrixSolver, print_matrix, multiply, compare_matrices
+from methods.matrix_solver import MatrixSolver, multiply, compare_matrices
 
-from constants import *
+from misc.constants import *
 
 
 class LuDecomposition(MatrixSolver):
@@ -10,6 +10,7 @@ class LuDecomposition(MatrixSolver):
         super().__init__(matrix, result)
         self.l = [[0 if (i != j) else 1 for j in range(self.SIZE)] for i in range(self.SIZE)]
         self.u = copy.deepcopy(self.matrix)
+        self.name = LU_DECOMPOSITION
 
     def __obtain_zero_and_build_l(self, row: int, col: int, pivot_row: int):
         if self.matrix[row][col] == 0:
@@ -36,16 +37,17 @@ class LuDecomposition(MatrixSolver):
         u_solver.build_lower_zeros()
         self.result = u_solver.back_substitution()
 
-        if not compare_matrices(multiply(l_solver.matrix, u_solver.matrix), self.old_matrix):
-            self.has_error = True
-            self.error = NOT_DECOMPOSABLE
-
         if l_solver.has_error and not self.has_error:
             self.has_error = l_solver.has_error
-            self.error = l_solver.error
+            self.error = l_solver.error + " in L"
 
         elif u_solver.has_error and not self.has_error:
             self.has_error = u_solver.has_error
-            self.error = u_solver.error
+            self.error = u_solver.error + "in U"
+
+        if (not self.has_error and
+                not compare_matrices(multiply(l_solver.matrix, u_solver.matrix), self.old_matrix)):
+            self.has_error = True
+            self.error = NOT_DECOMPOSABLE
 
         return self.result

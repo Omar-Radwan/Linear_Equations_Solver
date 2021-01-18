@@ -1,7 +1,7 @@
 import copy
 import heapq
 
-from constants import *
+from misc.constants import *
 
 
 def multiply(mat_a: [], mat_b: []):
@@ -42,6 +42,7 @@ class MatrixSolver():
         self.iterations = iterations
         self.has_error = False
         self.error = ""
+        self.name = ""
 
     def build_lower_zeros(self):
         """
@@ -220,4 +221,5 @@ class MatrixSolver():
             for j in range(self.SIZE):
                 res += self.result[j] * self.old_matrix[i][j]
             if not double_cmp(res, self.old_result[i]):
-                print(res, self.old_result[i])
+                pass
+                #print(res, self.old_result[i])
