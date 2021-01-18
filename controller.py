@@ -11,10 +11,10 @@ class Controller:
     def begin(self):
         iterations_list = []
         equation_list, method_string, seidel_initials,iterations,precision = self.get_input()
-        print(iterations)
-        print(precision)
+
         method_list=[method_string]
         index_dictionary, matrix, results = self.parse_input(equation_list)
+        print("matrix",matrix)
         method_object = self.method_type(matrix, results, method_string, seidel_initials,iterations,precision)
         roots, total_time,errors = self.solve(method_object)
         if method_string == "Guass Seidel" :
